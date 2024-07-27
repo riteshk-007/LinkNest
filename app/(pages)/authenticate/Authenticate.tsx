@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { useForm, SubmitHandler, set } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { FormData } from "@/types/types";
