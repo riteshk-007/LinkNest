@@ -29,6 +29,7 @@ import {
 import { LayoutProps, NavLinkProps } from "@/types/types";
 import Logo from "../_components/Logo";
 import { motion } from "framer-motion";
+import { signOut } from "next-auth/react";
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
@@ -134,8 +135,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 </DropdownMenuItem>
               </Link>
               <DropdownMenuSeparator className="bg-gray-900" />
-              <Link className="cursor-pointer" href="/authenticate">
-                <DropdownMenuItem className="text-red-400 focus:bg-red-900 focus:text-white">
+              <Link
+                className="cursor-pointer"
+                href="/"
+                onClick={() => signOut({ callbackUrl: "/" })}
+              >
+                <DropdownMenuItem className="text-red-400 focus:bg-red-900 focus:text-white cursor-default">
                   Logout
                 </DropdownMenuItem>
               </Link>

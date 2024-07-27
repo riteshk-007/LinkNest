@@ -1,7 +1,5 @@
 import { Metadata } from "next";
 import React from "react";
-// import AddLinks from "./_components/AddLinks";
-// import Preview from "./_components/Preview";
 
 export const metadata: Metadata = {
   title: "Home - Link Nest: All Your Social Links in One Place",
@@ -9,7 +7,12 @@ export const metadata: Metadata = {
     "Easily access and share all your social media profiles with just one link. Join Link Nest today and streamline your online presence.",
 };
 const page = () => {
-  return <div className="grid lg:grid-cols-2 gap-4"></div>;
+  return (
+    <div className="grid lg:grid-cols-3 gap-3">
+      <div className=" border lg:col-span-2 p-1 relative"></div>
+      <div className=" border lg:col-span-1 p-1 hidden md:block"></div>
+    </div>
+  );
 };
 
 export default page;
