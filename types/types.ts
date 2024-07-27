@@ -25,3 +25,15 @@ export interface NavLinkProps {
   icon: React.ReactElement<LucideIcon>;
   label: string;
 }
+
+export interface AnimateBtnProps {
+  text: string;
+}
+
+export interface PricePlan {
+  title: string;
+  monthlyPrice: string;
+  yearlyPrice: string;
+  features: { text: string }[];
+  buttonText: string;
+}
