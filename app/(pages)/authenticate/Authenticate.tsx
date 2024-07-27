@@ -4,24 +4,58 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { FormData } from "@/types/types";
+import { useMutation } from "@apollo/client";
+import { CREATE_USER } from "@/app/Graphql/Queries";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const AuthForm: React.FC = () => {
   const [isLogin, setIsLogin] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<FormData>();
 
+  const router = useRouter();
+
+  const [createUser] = useMutation(CREATE_USER, {
+    onError: (error) => {
+      setIsLoading(false);
+      const errorMessage =
+        error.graphQLErrors?.[0]?.message ||
+        "An error occurred, please try again later";
+      toast.error(errorMessage);
+      setError(errorMessage);
+    },
+    onCompleted: () => {
+      reset();
+      toast.success("Account created successfully");
+      setIsLoading(false);
+      setIsLogin(true);
+    },
+  });
+
+  // Submit form
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setIsLoading(true);
-    console.log(data);
-
-    setTimeout(() => {
+    try {
+      if (isLogin) {
+        // Login logic here
+      } else {
+        // Register
+        await createUser({ variables: data });
+      }
+    } catch (error) {
+      toast.error("An error occurred, please try again later");
+      console.error("Error during submission:", error);
+    } finally {
       setIsLoading(false);
-    }, 2000);
+    }
   };
 
   const formVariants: Variants = {
