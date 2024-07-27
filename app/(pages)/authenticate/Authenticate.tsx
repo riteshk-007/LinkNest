@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler, set } from "react-hook-form";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { FormData } from "@/types/types";
@@ -8,6 +8,7 @@ import { useMutation } from "@apollo/client";
 import { CREATE_USER } from "@/app/Graphql/Queries";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 
 const AuthForm: React.FC = () => {
   const [isLogin, setIsLogin] = useState<boolean>(true);
@@ -44,15 +45,29 @@ const AuthForm: React.FC = () => {
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setIsLoading(true);
     try {
+      // login
       if (isLogin) {
-        // Login logic here
+        const result = await signIn("credentials", {
+          redirect: false,
+          email: data.email,
+          password: data.password,
+        });
+
+        if (result?.error) {
+          setError("Invalid credentials. Please try again.");
+          toast.error("Invalid credentials. Please try again.");
+        } else {
+          toast.success("Successfully logged in");
+          router.push("/admin");
+        }
       } else {
-        // Register
+        // create user
         await createUser({ variables: data });
       }
     } catch (error) {
-      toast.error("An error occurred, please try again later");
-      console.error("Error during submission:", error);
+      console.error("Login error:", error);
+      setError("An unexpected error occurred. Please try again.");
+      toast.error("An unexpected error occurred. Please try again.");
     } finally {
       setIsLoading(false);
     }
