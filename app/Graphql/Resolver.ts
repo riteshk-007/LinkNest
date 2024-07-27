@@ -3,6 +3,19 @@ import { UserInputError } from "apollo-server-micro";
 import prisma from "@/DB/db.config";
 
 const Resolvers = {
+  Query: {
+    user: async (_: any, args: { id: string }) => {
+      try {
+        const user = await prisma.user.findUnique({
+          where: { id: args.id },
+          include: { links: true },
+        });
+        return user;
+      } catch (error) {
+        throw new UserInputError("Failed to get user");
+      }
+    },
+  },
   Mutation: {
     createUser: async (
       _: any,
