@@ -40,7 +40,7 @@ const HeroSection: React.FC = () => {
       <div className="mb-4 relative z-10">
         <button className="bg-neutral-800 text-gray-300 py-2 px-6 rounded-full flex items-center justify-center space-x-2 shadow-md text-xs border-2 border-neutral-600">
           <Sparkles size={18} color="gold" />
-          <span>Social Hub</span>
+          <span>Link Nest</span>
           <SquareArrowRight
             size={18}
             className="bg-sky-600 text-white rounded-md"
@@ -52,7 +52,7 @@ const HeroSection: React.FC = () => {
       </h1>
       <p className="text-lg md:text-xl bg-clip-text text-transparent bg-gradient-to-b from-white to-gray-400 mb-8 relative z-10">
         Easily access and share all your social media profiles with just one
-        link. Join Social Hub today and streamline your online presence.
+        link. Join Link Nest today and streamline your online presence.
       </p>
       <Link
         href={"/authenticate"}
