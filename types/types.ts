@@ -7,3 +7,9 @@ export interface StarProps {
 export interface StarsProps {
   count: number;
 }
+
+export interface FormData {
+  username: string;
+  email: string;
+  password: string;
+}
