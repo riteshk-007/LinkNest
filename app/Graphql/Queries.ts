@@ -19,14 +19,6 @@ export const GET_USER = gql`
   query User($userId: ID!) {
     user(id: $userId) {
       id
-      email
-      username
-      password
-      desc
-      image
-      createdAt
-      updatedAt
-      isPremium
       links {
         id
         url

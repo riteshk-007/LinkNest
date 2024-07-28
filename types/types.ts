@@ -1,4 +1,5 @@
 import { LucideIcon } from "lucide-react";
+import { ISODateString } from "next-auth";
 
 export interface StarProps {
   top: number;
@@ -44,4 +45,22 @@ export interface LinkCardProps {
   icon: React.ReactElement<LucideIcon>;
   onDelete: () => void;
   onEdit: () => void;
+}
+
+export interface CustomSession {
+  user?: CustomUser | null;
+  expires: ISODateString | null;
+}
+
+export interface CustomUser {
+  createdAt: string;
+  desc: string | null;
+  email: string;
+  id: string;
+  image: string | null;
+  isPremium: boolean;
+  password: string;
+  themeId: string | null;
+  updatedAt: string;
+  username: string;
 }
