@@ -67,7 +67,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         </div>
       </div>
       <div className="flex flex-col">
-        <header className="flex h-16 items-center gap-4 bg-gray-900 border-b border-gray-900 sticky top-0 px-6">
+        <header className="flex h-16 items-center gap-4 bg-gray-900 border-b border-gray-900 sticky top-0 px-6 z-10">
           <Sheet>
             <SheetTrigger asChild>
               <Button
