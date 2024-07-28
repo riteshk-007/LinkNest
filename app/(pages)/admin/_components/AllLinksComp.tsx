@@ -77,6 +77,13 @@ const AllLinksComp = () => {
           />
         ))}
       </div>
+      <>
+        {currentLinks.length === 0 && (
+          <div className="flex items-center justify-center w-full h-20  text-white rounded-md">
+            No links found
+          </div>
+        )}
+      </>
 
       {totalPages > 1 && (
         <Pagination className="mt-5 select-none">
