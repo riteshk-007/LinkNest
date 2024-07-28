@@ -29,3 +29,20 @@ export const GET_USER = gql`
     }
   }
 `;
+
+export const CREATE_LINK = gql`
+  mutation Mutation(
+    $url: String!
+    $title: String!
+    $userId: ID!
+    $image: String
+  ) {
+    createLink(url: $url, title: $title, userId: $userId, image: $image) {
+      id
+      url
+      title
+      image
+      userId
+    }
+  }
+`;

@@ -27,6 +27,7 @@ const Schema = `#graphql
 
   type Mutation {
     createUser(email: String!, username: String!, password: String!): User!
+    createLink(url: String!, title: String!, image: String, userId: ID!): Link!
   }
 `;
 

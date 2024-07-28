@@ -71,6 +71,28 @@ const Resolvers = {
         throw new Error("Failed to create user");
       }
     },
+    createLink: async (
+      _: any,
+      args: { url: string; title: string; image: string; userId: string }
+    ) => {
+      try {
+        const { url, title, image, userId } = args;
+        if (url.trim() === "" || title.trim() === "") {
+          throw new UserInputError("Please fill in all fields");
+        }
+        const link = await prisma.link.create({
+          data: {
+            url,
+            title,
+            image,
+            userId,
+          },
+        });
+        return link;
+      } catch (error) {
+        throw new UserInputError("Failed to create link");
+      }
+    },
   },
 };
 
