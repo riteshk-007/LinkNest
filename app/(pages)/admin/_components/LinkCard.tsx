@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { MoreVertical, Link as LinkIcon, Edit, Trash } from "lucide-react";
 import { LinkCardProps } from "@/types/types";
 import {
@@ -7,6 +7,16 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
 
 const LinkCard: React.FC<LinkCardProps> = ({
   title,
@@ -15,6 +25,17 @@ const LinkCard: React.FC<LinkCardProps> = ({
   onDelete,
   onEdit,
 }) => {
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
+
+  const handleDelete = () => {
+    setIsAlertOpen(true);
+  };
+
+  const handleDeleteConfirm = () => {
+    setIsAlertOpen(false);
+    onDelete();
+  };
+
   const truncateUrl = (url: string, maxLength: number) => {
     if (url.length <= maxLength) return url;
     return url.substr(0, maxLength - 3) + "...";
@@ -55,7 +76,7 @@ const LinkCard: React.FC<LinkCardProps> = ({
               Edit
             </DropdownMenuItem>
             <DropdownMenuItem
-              onClick={onDelete}
+              onClick={handleDelete}
               className="flex items-center px-2 py-2 text-sm cursor-pointer  text-red-400 hover:bg-red-500 hover:text-white"
             >
               <Trash size={16} className="mr-2" />
@@ -64,6 +85,30 @@ const LinkCard: React.FC<LinkCardProps> = ({
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
+
+      <AlertDialog open={isAlertOpen} onOpenChange={setIsAlertOpen}>
+        <AlertDialogContent className="text-white bg-neutral-900 border-zinc-500">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Confirm Delete</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete this item? This action cannot be
+              undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel
+              className="bg-zinc-500"
+              onClick={() => setIsAlertOpen(false)}
+            >
+              Cancel
+            </AlertDialogCancel>
+
+            <Button onClick={handleDeleteConfirm} variant="destructive">
+              Delete
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
