@@ -4,11 +4,20 @@ import prisma from "@/DB/db.config";
 
 const Resolvers = {
   Query: {
-    user: async (_: any, args: { id: string }) => {
+    user: async (
+      _: any,
+      args: { id: string; skip?: number; take?: number }
+    ) => {
+      const { id, skip = 0, take = 6 } = args;
       try {
         const user = await prisma.user.findUnique({
-          where: { id: args.id },
-          include: { links: true },
+          where: { id },
+          include: {
+            links: {
+              skip,
+              take,
+            },
+          },
         });
         return user;
       } catch (error) {

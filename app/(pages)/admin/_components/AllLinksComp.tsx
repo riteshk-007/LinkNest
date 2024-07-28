@@ -3,10 +3,11 @@ import React from "react";
 import { IoMdAdd } from "react-icons/io";
 import LinkCard from "./LinkCard";
 import { Facebook } from "lucide-react";
-import { OperationVariables, QueryResult, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { GET_USER } from "@/app/Graphql/Queries";
 import { useSession } from "next-auth/react";
 import { CustomSession } from "@/types/types";
+import LinksSkeletons from "./Skeletons/LinksSkeletons";
 
 const AllLinksComp = () => {
   const { data: session } = useSession();
@@ -46,14 +47,17 @@ const AllLinksComp = () => {
         </button>
       </div>
       {/* all links container*/}
+      {loading && (
+        <>
+          <LinksSkeletons />
+        </>
+      )}
+      {error && (
+        <div className="flex items-center justify-center w-full h-20 bg-red-500 text-white rounded-md">
+          Error: {error.message}
+        </div>
+      )}
       <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
-        {loading && <div>Loading...</div>}
-        {error && (
-          <div className="flex items-center justify-center w-full h-20 bg-red-500 text-white rounded-md">
-            Error: {error.message}
-          </div>
-        )}
-
         {data &&
           data.user.links.map((link: any) => (
             <LinkCard
