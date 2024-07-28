@@ -23,6 +23,7 @@ import { Button } from "@/components/ui/button";
 import { IoMdAdd } from "react-icons/io";
 import Image from "next/image";
 import { CreateLinkDialogProps, FormInputs, SocialIcon } from "@/types/types";
+import { LayoutGrid } from "lucide-react";
 
 const socialIcons: SocialIcon[] = [
   {
@@ -152,6 +153,24 @@ const CreateLinkDialog: React.FC<CreateLinkDialogProps> = ({
         <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4 py-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
+              <label htmlFor="title" className="text-white">
+                Title
+              </label>
+              <Input
+                placeholder="Title"
+                {...register("title", { required: "Title is required" })}
+                className="bg-[#2c2b2f] text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-600"
+              />
+              {errors.title && (
+                <span className="text-red-500 text-sm">
+                  {errors.title.message}
+                </span>
+              )}
+            </div>
+            <div>
+              <label htmlFor="url" className="text-white">
+                URL
+              </label>
               <Input
                 placeholder="URL"
                 {...register("url", {
@@ -169,20 +188,7 @@ const CreateLinkDialog: React.FC<CreateLinkDialogProps> = ({
                 </span>
               )}
             </div>
-            <div>
-              <Input
-                placeholder="Title"
-                {...register("title", { required: "Title is required" })}
-                className="bg-[#2c2b2f] text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-600"
-              />
-              {errors.title && (
-                <span className="text-red-500 text-sm">
-                  {errors.title.message}
-                </span>
-              )}
-            </div>
           </div>
-
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
@@ -202,7 +208,9 @@ const CreateLinkDialog: React.FC<CreateLinkDialogProps> = ({
                     <span>{selectedIcon.name}</span>
                   </>
                 ) : (
-                  <>Select Icon</>
+                  <>
+                    <LayoutGrid className="h-4 w-4 mr-1" /> Select Icon
+                  </>
                 )}
               </Button>
             </DropdownMenuTrigger>

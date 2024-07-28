@@ -10,10 +10,10 @@ export const metadata: Metadata = {
 const page = () => {
   return (
     <div className="grid lg:grid-cols-3 gap-3">
-      <div className="border lg:col-span-2 p-1 relative">
+      <div className="lg:col-span-2 p-1 relative">
         <AllLinksComp />
       </div>
-      <div className="border lg:col-span-1 p-1 hidden md:block sticky top-4"></div>
+      <div className="lg:col-span-1 p-1 hidden md:block sticky top-4"></div>
     </div>
   );
 };
