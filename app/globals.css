@@ -67,3 +67,26 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* scrollbar desgin */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #3f3f3f;
+  border-radius: 100px;
+  border: 2px solid #3f3f3f;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: transparent;
+}
+
+.custom-scrollbar {
+  scrollbar-color: #000000;
+}

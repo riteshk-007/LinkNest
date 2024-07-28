@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import { IoMdAdd } from "react-icons/io";
 import LinkCard from "./LinkCard";
 import { Facebook } from "lucide-react";
 import { useQuery } from "@apollo/client";
@@ -16,6 +15,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import CreateLinkDialog from "./CreateLinkDialog";
 
 const AllLinksComp = () => {
   const { data: session } = useSession();
@@ -56,13 +56,7 @@ const AllLinksComp = () => {
           <span className="sm:text-lg font-bold">All Links</span>
           <span className="text-xs text-slate-500"> -{links.length} links</span>
         </span>
-        <button className="relative inline-flex md:h-12 overflow-hidden rounded-md p-[1px] focus:outline-none shadow-xl">
-          <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
-          <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-md bg-zinc-950 px-3 py-1 text-sm font-medium text-white backdrop-blur-3xl">
-            <IoMdAdd className="h-5 w-5" />
-            <span className="ml-1">Add Link</span>
-          </span>
-        </button>
+        <CreateLinkDialog buttonText="Add Link" />
       </div>
 
       <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">

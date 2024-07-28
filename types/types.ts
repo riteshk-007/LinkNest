@@ -64,3 +64,18 @@ export interface CustomUser {
   updatedAt: string;
   username: string;
 }
+
+export interface FormInputs {
+  url: string;
+  title: string;
+  icon?: SocialIcon;
+}
+
+export interface SocialIcon {
+  name: string;
+  imageUrl: string;
+}
+
+export interface CreateLinkDialogProps {
+  buttonText?: string;
+}
