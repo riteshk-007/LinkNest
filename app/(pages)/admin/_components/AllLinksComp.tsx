@@ -83,7 +83,7 @@ const AllLinksComp = () => {
             key={link.id}
             title={link.title}
             url={link.url}
-            icon={<Facebook />}
+            image={link.image}
             onDelete={() => handleDelete(link.id)}
             onEdit={handleEdit}
           />

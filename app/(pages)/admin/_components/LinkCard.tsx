@@ -17,11 +17,12 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 const LinkCard: React.FC<LinkCardProps> = ({
   title,
   url,
-  icon,
+  image,
   onDelete,
   onEdit,
 }) => {
@@ -45,8 +46,18 @@ const LinkCard: React.FC<LinkCardProps> = ({
     <div className="w-full bg-neutral-900 text-white rounded shadow-lg overflow-hidden">
       <div className="p-4 flex items-start justify-between">
         <div className="flex items-center space-x-3 flex-grow min-w-0">
-          <div className="flex-shrink-0 flex items-center justify-center w-10 h-10 bg-gray-700 rounded-full">
-            {icon}
+          <div className="flex-shrink-0 flex items-center justify-center w-10 h-10 bg-white rounded-full">
+            {image ? (
+              <Image
+                src={image}
+                alt={title}
+                width={40}
+                height={40}
+                className="rounded-full bg-white"
+              />
+            ) : (
+              <LinkIcon size={24} color="blue" />
+            )}
           </div>
           <div className="flex-grow min-w-0">
             <div className="font-bold text-lg truncate">{title}</div>

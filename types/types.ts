@@ -42,7 +42,7 @@ export interface PricePlan {
 export interface LinkCardProps {
   title: string;
   url: string;
-  icon: React.ReactElement<LucideIcon>;
+  image?: string;
   onDelete: () => void;
   onEdit: () => void;
 }
