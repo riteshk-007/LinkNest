@@ -29,6 +29,7 @@ const Schema = `#graphql
     createUser(email: String!, username: String!, password: String!): User!
     createLink(url: String!, title: String!, image: String, userId: ID!): Link!
     deleteLink(id: ID!): Link!
+    deleteUser(id: ID!): User!
   }
 `;
 

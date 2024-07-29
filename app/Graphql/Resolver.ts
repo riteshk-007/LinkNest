@@ -102,6 +102,31 @@ const Resolvers = {
         throw new UserInputError("Failed to delete link");
       }
     },
+    deleteUser: async (_: any, args: { id: string }) => {
+      try {
+        const user = await prisma.user.findUnique({
+          where: { id: args.id },
+        });
+
+        if (!user) {
+          throw new UserInputError("User not found");
+        }
+
+        await prisma.$transaction(async (prisma) => {
+          await prisma.link.deleteMany({
+            where: { userId: args.id },
+          });
+
+          await prisma.user.delete({
+            where: { id: args.id },
+          });
+        });
+
+        return user;
+      } catch (error) {
+        throw new UserInputError("Failed to delete user");
+      }
+    },
   },
 };
 

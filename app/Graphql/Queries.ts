@@ -58,3 +58,19 @@ export const DELETE_LINK = gql`
     }
   }
 `;
+
+export const DELETE_USER = gql`
+  mutation Mutation($deleteUserId: ID!) {
+    deleteUser(id: $deleteUserId) {
+      id
+      email
+      username
+      password
+      desc
+      image
+      createdAt
+      updatedAt
+      isPremium
+    }
+  }
+`;
