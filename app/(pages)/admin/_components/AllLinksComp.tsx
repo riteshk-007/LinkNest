@@ -2,8 +2,8 @@
 import React, { useState } from "react";
 import LinkCard from "./LinkCard";
 import { Facebook } from "lucide-react";
-import { useQuery } from "@apollo/client";
-import { GET_USER } from "@/app/Graphql/Queries";
+import { useMutation, useQuery } from "@apollo/client";
+import { DELETE_LINK, GET_USER } from "@/app/Graphql/Queries";
 import { useSession } from "next-auth/react";
 import { CustomSession } from "@/types/types";
 import LinksSkeletons from "./Skeletons/LinksSkeletons";
@@ -16,6 +16,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import CreateLinkDialog from "./CreateLinkDialog";
+import { toast } from "sonner";
 
 const AllLinksComp = () => {
   const { data: session } = useSession();
@@ -23,12 +24,29 @@ const AllLinksComp = () => {
   const { data, loading, error } = useQuery(GET_USER, {
     variables: { userId: sessionData?.user?.id ? sessionData.user.id : "" },
   });
+  const [DeleteLink] = useMutation(DELETE_LINK, {
+    onError: (error) => {
+      const errorMessage =
+        error.graphQLErrors?.[0]?.message ||
+        "An error occurred while deleting link";
+      toast.error(errorMessage);
+    },
+    onCompleted: () => {
+      toast.success("Link deleted successfully");
+    },
+    refetchQueries: [
+      {
+        query: GET_USER,
+        variables: { userId: sessionData?.user?.id ? sessionData.user.id : "" },
+      },
+    ],
+  });
 
   const [currentPage, setCurrentPage] = useState(1);
   const linksPerPage = 6;
 
-  const handleDelete = () => {
-    console.log("Delete clicked");
+  const handleDelete = (id: { id: string }) => {
+    DeleteLink({ variables: { deleteLinkId: id } });
   };
 
   const handleEdit = () => {
@@ -66,7 +84,7 @@ const AllLinksComp = () => {
             title={link.title}
             url={link.url}
             icon={<Facebook />}
-            onDelete={handleDelete}
+            onDelete={() => handleDelete(link.id)}
             onEdit={handleEdit}
           />
         ))}
