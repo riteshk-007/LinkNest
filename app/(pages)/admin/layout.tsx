@@ -151,7 +151,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             </DropdownMenu>
           </div>
         </header>
-        <main className="flex-1 p-6 bg-gray-950">{children}</main>
+        <main className="flex-1 md:p-6 bg-gray-950">{children}</main>
       </div>
     </div>
   );

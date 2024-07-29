@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState, useRef, useEffect } from "react";
 import { Camera, Edit2, Trash2, Save, User } from "lucide-react";
 import {
@@ -12,32 +13,20 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-
-interface User {
-  id: string;
-  email: string;
-  username: string;
-  desc: string;
-  image: string;
-  createdAt: string;
-  isPremium: boolean;
-}
+import { useSession } from "next-auth/react";
+import { CustomSession } from "@/types/types";
+import Image from "next/image";
 
 const UserSetting: React.FC = () => {
-  const [user, setUser] = useState<User>({
-    id: "1",
-    email: "user@example.com",
-    username: "johndoe",
-    desc: "A passionate developer with a keen interest in creating beautiful and functional web applications.",
-    image: "",
-    createdAt: "2023-01-01",
-    isPremium: true,
-  });
+  const { data: session, status } = useSession();
+
+  const sessionData = session as CustomSession | null;
+  const user = sessionData?.user;
 
   const [editingUsername, setEditingUsername] = useState(false);
   const [editingDesc, setEditingDesc] = useState(false);
-  const [tempUsername, setTempUsername] = useState(user.username);
-  const [tempDesc, setTempDesc] = useState(user.desc);
+  const [tempUsername, setTempUsername] = useState(user?.username || "");
+  const [tempDesc, setTempDesc] = useState(user?.desc || "");
 
   const usernameInputRef = useRef<HTMLInputElement>(null);
   const descTextareaRef = useRef<HTMLTextAreaElement>(null);
@@ -58,7 +47,11 @@ const UserSetting: React.FC = () => {
   const handleUsernameEdit = () => {
     if (editingUsername) {
       console.log("New username:", tempUsername);
-      setUser({ ...user, username: tempUsername });
+      // Reset the tempUsername after saving
+      setTempUsername("");
+    } else {
+      // Set the tempUsername to the current username when starting to edit
+      setTempUsername(user?.username || "");
     }
     setEditingUsername(!editingUsername);
   };
@@ -66,7 +59,10 @@ const UserSetting: React.FC = () => {
   const handleDescriptionEdit = () => {
     if (editingDesc) {
       console.log("New description:", tempDesc);
-      setUser({ ...user, desc: tempDesc });
+      // Reset the tempDesc after saving
+      setTempDesc("");
+    } else {
+      setTempDesc(user?.desc || "");
     }
     setEditingDesc(!editingDesc);
   };
@@ -82,6 +78,18 @@ const UserSetting: React.FC = () => {
     }
   };
 
+  if (status === "loading") {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-4 border-gray-300"></div>
+      </div>
+    );
+  }
+
+  if (status === "unauthenticated" || !user) {
+    return <div>Please log in to view your account settings.</div>;
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-zinc-900 via-neutral-800 to-zinc-900 text-white p-6">
       <div className="max-w-3xl mx-auto">
@@ -93,7 +101,9 @@ const UserSetting: React.FC = () => {
           <div className="flex flex-col md:flex-row items-center mb-8">
             <div className="relative mb-4 md:mb-0">
               {user.image ? (
-                <img
+                <Image
+                  width={128}
+                  height={128}
                   src={user.image}
                   alt="User"
                   className="w-32 h-32 rounded-full object-cover border-4 border-blue-500 shadow-lg"
@@ -184,7 +194,7 @@ const UserSetting: React.FC = () => {
                     />
                   ) : (
                     <textarea
-                      value={user.desc}
+                      value={user.desc || ""}
                       readOnly
                       className="bg-gray-700 bg-opacity-50 text-white px-4 py-2 rounded-l-md w-full resize-none"
                       rows={4}
