@@ -18,6 +18,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
           backgroundImage: `linear-gradient(to bottom, ${gradientFrom}, ${gradientTo})`,
         }
       : { backgroundColor: backgroundColor || "black" };
+
   return (
     <div className="flex flex-col h-full" style={backgroundStyle}>
       {/* User Info Section */}
@@ -30,10 +31,10 @@ const UserProfile: React.FC<UserProfileProps> = ({
               alt={username}
               width={100}
               height={100}
-              className="rounded-full object-cover "
+              className="rounded-full object-cover"
             />
           ) : (
-            <div className="w-32 h-32 bg-black  rounded-full flex items-center justify-center">
+            <div className="w-32 h-32 bg-black rounded-full flex items-center justify-center">
               <Logo />
             </div>
           )}
@@ -51,12 +52,13 @@ const UserProfile: React.FC<UserProfileProps> = ({
       </div>
 
       {/* Link List */}
-      <div className="flex-grow overflow-y-auto px-6 pb-16 custom-scrollbar">
+      <div className="flex items-center flex-col justify-start pb-16 pt-4  overflow-y-auto custom-scrollbar px-4">
         {links.map((link, index) => (
           <a
             key={index}
             href={link.url}
-            className="flex items-center bg-white bg-opacity-20 rounded-lg p-3 mb-3 hover:bg-opacity-30 transition-all"
+            target="_blank"
+            className="flex w-full max-w-md items-center bg-white bg-opacity-20 rounded-lg p-3 mb-3 hover:bg-opacity-30 transition-all"
           >
             <link.icon size={24} className="text-white mr-3" />
             <span className="text-white font-medium">{link.title}</span>
@@ -65,7 +67,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
       </div>
 
       {/* Logo */}
-      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black p-2 rounded-lg">
+      <div className=" w-52 mx-auto flex items-center justify-center mb-3 bg-black p-2 rounded-lg">
         <Logo />
       </div>
     </div>
