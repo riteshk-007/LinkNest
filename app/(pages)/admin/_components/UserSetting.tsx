@@ -13,9 +13,12 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { CustomSession } from "@/types/types";
 import Image from "next/image";
+import { useMutation } from "@apollo/client";
+import { DELETE_USER } from "@/app/Graphql/Queries";
+import { toast } from "sonner";
 
 const UserSetting: React.FC = () => {
   const { data: session, status } = useSession();
@@ -39,6 +42,20 @@ const UserSetting: React.FC = () => {
       descTextareaRef.current.focus();
     }
   }, [editingUsername, editingDesc]);
+
+  const [deleteUser] = useMutation(DELETE_USER, {
+    onCompleted: () => {
+      toast.success("Account deleted successfully");
+      setTimeout(() => {
+        signOut({
+          callbackUrl: "/",
+        });
+      }, 1000);
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     // Image upload logic here
@@ -76,6 +93,10 @@ const UserSetting: React.FC = () => {
     if (newWordCount <= 20) {
       setTempDesc(newDesc);
     }
+  };
+
+  const handleDeleteAccount = (userId: string) => {
+    deleteUser({ variables: { deleteUserId: userId } });
   };
 
   if (status === "loading") {
@@ -262,7 +283,10 @@ const UserSetting: React.FC = () => {
                   <AlertDialogCancel className="bg-gray-700 hover:bg-gray-600 transition-colors duration-300">
                     Cancel
                   </AlertDialogCancel>
-                  <AlertDialogAction className="bg-red-600 hover:bg-red-700 transition-colors duration-300 px-4 py-2 rounded-md">
+                  <AlertDialogAction
+                    onClick={() => handleDeleteAccount(user.id)}
+                    className="bg-red-600 hover:bg-red-700 transition-colors duration-300 px-4 py-2 rounded-md"
+                  >
                     Delete Account
                   </AlertDialogAction>
                 </AlertDialogFooter>
