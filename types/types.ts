@@ -80,3 +80,23 @@ export interface CreateLinkDialogProps {
   buttonText?: string;
   user: CustomSession;
 }
+
+export interface PhoneMockupProps {
+  children: React.ReactNode;
+  backgroundColor?: string;
+  gradientFrom?: string;
+  gradientTo?: string;
+}
+
+export interface LinkItem {
+  icon: React.ElementType;
+  title: string;
+  url: string;
+}
+
+export interface UserProfileProps {
+  userImage?: string;
+  username: string;
+  description: string;
+  links: LinkItem[];
+}

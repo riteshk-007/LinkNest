@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import React from "react";
 import AllLinksComp from "./_components/AllLinksComp";
+import Preview from "./_components/Preview";
 
 export const metadata: Metadata = {
   title: "Home - Link Nest: All Your Social Links in One Place",
@@ -13,7 +14,9 @@ const page = () => {
       <div className="lg:col-span-2 p-1 relative">
         <AllLinksComp />
       </div>
-      <div className="lg:col-span-1 p-1 hidden md:block sticky top-4"></div>
+      <div className="lg:col-span-1 relative">
+        <Preview />
+      </div>
     </div>
   );
 };
