@@ -83,9 +83,6 @@ export interface CreateLinkDialogProps {
 
 export interface PhoneMockupProps {
   children: React.ReactNode;
-  backgroundColor?: string;
-  gradientFrom?: string;
-  gradientTo?: string;
 }
 
 export interface LinkItem {
@@ -99,4 +96,7 @@ export interface UserProfileProps {
   username: string;
   description: string;
   links: LinkItem[];
+  backgroundColor?: string;
+  gradientFrom?: string;
+  gradientTo?: string;
 }

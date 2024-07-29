@@ -8,9 +8,18 @@ const UserProfile: React.FC<UserProfileProps> = ({
   username,
   description,
   links,
+  backgroundColor,
+  gradientFrom,
+  gradientTo,
 }) => {
+  const backgroundStyle =
+    gradientFrom && gradientTo
+      ? {
+          backgroundImage: `linear-gradient(to bottom, ${gradientFrom}, ${gradientTo})`,
+        }
+      : { backgroundColor: backgroundColor || "black" };
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full" style={backgroundStyle}>
       {/* User Info Section */}
       <div className="flex-shrink-0 pt-8 pb-4">
         {/* User Image */}

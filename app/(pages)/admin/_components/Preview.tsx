@@ -31,11 +31,13 @@ const Preview = () => {
     },
   ];
   return (
-    <PhoneMockup gradientFrom="#4a90e2" gradientTo="#81c784">
+    <PhoneMockup>
       <UserProfile
         username="@Riteshk_007"
         description="Full Stack Developer"
         links={links}
+        gradientFrom="#4a90e2"
+        gradientTo="#81c784"
       />
     </PhoneMockup>
   );
