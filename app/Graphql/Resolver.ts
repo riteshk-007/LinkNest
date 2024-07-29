@@ -84,6 +84,24 @@ const Resolvers = {
         throw new UserInputError("Failed to create link");
       }
     },
+    deleteLink: async (_: any, args: { id: string }) => {
+      try {
+        const link = await prisma.link.findUnique({
+          where: { id: args.id },
+        });
+
+        if (!link) {
+          throw new UserInputError("Link not found");
+        }
+
+        await prisma.link.delete({
+          where: { id: args.id },
+        });
+        return link;
+      } catch (error) {
+        throw new UserInputError("Failed to delete link");
+      }
+    },
   },
 };
 

@@ -46,3 +46,15 @@ export const CREATE_LINK = gql`
     }
   }
 `;
+
+export const DELETE_LINK = gql`
+  mutation DeleteLink($deleteLinkId: ID!) {
+    deleteLink(id: $deleteLinkId) {
+      id
+      url
+      title
+      image
+      userId
+    }
+  }
+`;
