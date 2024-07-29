@@ -78,4 +78,5 @@ export interface SocialIcon {
 
 export interface CreateLinkDialogProps {
   buttonText?: string;
+  user: CustomSession;
 }

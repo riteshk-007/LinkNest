@@ -24,6 +24,9 @@ import { IoMdAdd } from "react-icons/io";
 import Image from "next/image";
 import { CreateLinkDialogProps, FormInputs, SocialIcon } from "@/types/types";
 import { LayoutGrid } from "lucide-react";
+import { useMutation } from "@apollo/client";
+import { CREATE_LINK, GET_USER } from "@/app/Graphql/Queries";
+import { toast } from "sonner";
 
 const socialIcons: SocialIcon[] = [
   {
@@ -110,8 +113,11 @@ const socialIcons: SocialIcon[] = [
 
 const CreateLinkDialog: React.FC<CreateLinkDialogProps> = ({
   buttonText = "Create Link",
+  user,
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const {
     register,
     handleSubmit,
@@ -123,8 +129,45 @@ const CreateLinkDialog: React.FC<CreateLinkDialogProps> = ({
 
   const selectedIcon = watch("icon");
 
+  const [createLink] = useMutation(CREATE_LINK, {
+    onError: (error) => {
+      setIsLoading(false);
+      const errorMessage =
+        error.graphQLErrors?.[0]?.message ||
+        "An error occurred while creating link";
+      toast.error(errorMessage);
+      setError(errorMessage);
+    },
+    onCompleted: () => {
+      toast.success("Link created successfully");
+      setIsLoading(false);
+    },
+    refetchQueries: [
+      {
+        query: GET_USER,
+        variables: { userId: user?.user?.id ? user.user.id : "" },
+      },
+    ],
+  });
+
   const onSubmit: SubmitHandler<FormInputs> = (data) => {
-    console.log(data);
+    if (!user?.user?.id) {
+      toast.error("User ID is not available");
+      return;
+    }
+
+    setIsLoading(true);
+
+    createLink({
+      variables: {
+        url: data.url,
+        title: data.title,
+        userId: user.user.id,
+        image: data.icon?.imageUrl,
+      },
+    });
+
+    setIsLoading(false);
     setIsOpen(false);
     reset();
   };
@@ -239,7 +282,7 @@ const CreateLinkDialog: React.FC<CreateLinkDialogProps> = ({
             type="submit"
             className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            Add Link
+            {isLoading ? "Creating..." : "Create"}
           </Button>
         </form>
       </DialogContent>

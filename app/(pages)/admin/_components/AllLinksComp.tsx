@@ -21,7 +21,7 @@ const AllLinksComp = () => {
   const { data: session } = useSession();
   const sessionData = session as CustomSession;
   const { data, loading, error } = useQuery(GET_USER, {
-    variables: { userId: sessionData?.user?.id },
+    variables: { userId: sessionData?.user?.id ? sessionData.user.id : "" },
   });
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -56,7 +56,7 @@ const AllLinksComp = () => {
           <span className="sm:text-lg font-bold">All Links</span>
           <span className="text-xs text-slate-500"> -{links.length} links</span>
         </span>
-        <CreateLinkDialog buttonText="Add Link" />
+        <CreateLinkDialog buttonText="Add Link" user={sessionData} />
       </div>
 
       <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
