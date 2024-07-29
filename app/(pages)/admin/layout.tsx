@@ -30,6 +30,7 @@ import { LayoutProps, NavLinkProps } from "@/types/types";
 import Logo from "../_components/Logo";
 import { motion } from "framer-motion";
 import { signOut } from "next-auth/react";
+import { Share } from "../_components/Share";
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
@@ -109,43 +110,46 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               <Logo />
             </div>
           </div>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="rounded-full bg-gray-900 hover:bg-gray-700 border-0 outline-none focus:ring-0"
+          <div className="flex items-center justify-center gap-2">
+            <Share />
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="rounded-full bg-gray-900 hover:bg-gray-700 border-0 outline-none focus:ring-0"
+                >
+                  <CircleUser className="h-6 w-6 text-white" />
+                  <span className="sr-only">Toggle user menu</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                align="end"
+                className="w-56 bg-gray-900 border-gray-900 text-white"
               >
-                <CircleUser className="h-6 w-6 text-white" />
-                <span className="sr-only">Toggle user menu</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent
-              align="end"
-              className="w-56 bg-gray-900 border-gray-900 text-white"
-            >
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator className="bg-gray-900" />
-              <DropdownMenuItem className="focus:bg-gray-900 focus:text-white cursor-pointer">
-                Support
-              </DropdownMenuItem>
-              <Link href="/admin/setting">
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator className="bg-gray-900" />
                 <DropdownMenuItem className="focus:bg-gray-900 focus:text-white cursor-pointer">
-                  Settings
+                  Support
                 </DropdownMenuItem>
-              </Link>
-              <DropdownMenuSeparator className="bg-gray-900" />
-              <Link
-                className="cursor-pointer"
-                href="/"
-                onClick={() => signOut({ callbackUrl: "/" })}
-              >
-                <DropdownMenuItem className="text-red-400 focus:bg-red-900 focus:text-white cursor-default">
-                  Logout
-                </DropdownMenuItem>
-              </Link>
-            </DropdownMenuContent>
-          </DropdownMenu>
+                <Link href="/admin/setting">
+                  <DropdownMenuItem className="focus:bg-gray-900 focus:text-white cursor-pointer">
+                    Settings
+                  </DropdownMenuItem>
+                </Link>
+                <DropdownMenuSeparator className="bg-gray-900" />
+                <Link
+                  className="cursor-pointer"
+                  href="/"
+                  onClick={() => signOut({ callbackUrl: "/" })}
+                >
+                  <DropdownMenuItem className="text-red-400 focus:bg-red-900 focus:text-white cursor-default">
+                    Logout
+                  </DropdownMenuItem>
+                </Link>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </header>
         <main className="flex-1 p-6 bg-gray-950">{children}</main>
       </div>
