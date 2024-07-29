@@ -42,8 +42,8 @@ export function Share() {
     <div className="flex justify-center items-center">
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <span className="p-3 cursor-pointer border rounded-full bg-gray-100 text-black shadow-md hover:shadow-lg hover:bg-gray-200 focus:ring-2 focus:ring-gray-400 focus:outline-none transition-transform duration-200 ease-in-out transform hover:scale-105">
-            <Share2 className="h-5 w-5" />
+          <span className="p-2 md:p-3 cursor-pointer border rounded-full bg-gray-100 text-black shadow-md hover:shadow-lg hover:bg-gray-200 focus:ring-2 focus:ring-gray-400 focus:outline-none transition-transform duration-200 ease-in-out transform hover:scale-105">
+            <Share2 className="md:h-5 md:w-5 h-4 w-4" />
           </span>
         </DialogTrigger>
         <DialogContent className="sm:max-w-md bg-neutral-900 border border-neutral-700 text-white rounded-lg shadow-lg">
