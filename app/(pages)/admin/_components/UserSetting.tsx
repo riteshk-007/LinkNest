@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
-import { Camera, Edit2, Trash2, Save, User } from "lucide-react";
+import { Camera, Trash2, User, Check } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -26,23 +25,6 @@ const UserSetting: React.FC = () => {
   const sessionData = session as CustomSession | null;
   const user = sessionData?.user;
 
-  const [editingUsername, setEditingUsername] = useState(false);
-  const [editingDesc, setEditingDesc] = useState(false);
-  const [tempUsername, setTempUsername] = useState(user?.username || "");
-  const [tempDesc, setTempDesc] = useState(user?.desc || "");
-
-  const usernameInputRef = useRef<HTMLInputElement>(null);
-  const descTextareaRef = useRef<HTMLTextAreaElement>(null);
-
-  useEffect(() => {
-    if (editingUsername && usernameInputRef.current) {
-      usernameInputRef.current.focus();
-    }
-    if (editingDesc && descTextareaRef.current) {
-      descTextareaRef.current.focus();
-    }
-  }, [editingUsername, editingDesc]);
-
   const [deleteUser] = useMutation(DELETE_USER, {
     onCompleted: () => {
       toast.success("Account deleted successfully");
@@ -59,40 +41,6 @@ const UserSetting: React.FC = () => {
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     // Image upload logic here
-  };
-
-  const handleUsernameEdit = () => {
-    if (editingUsername) {
-      console.log("New username:", tempUsername);
-      // Reset the tempUsername after saving
-      setTempUsername("");
-    } else {
-      // Set the tempUsername to the current username when starting to edit
-      setTempUsername(user?.username || "");
-    }
-    setEditingUsername(!editingUsername);
-  };
-
-  const handleDescriptionEdit = () => {
-    if (editingDesc) {
-      console.log("New description:", tempDesc);
-      // Reset the tempDesc after saving
-      setTempDesc("");
-    } else {
-      setTempDesc(user?.desc || "");
-    }
-    setEditingDesc(!editingDesc);
-  };
-
-  const wordCount = tempDesc.trim().split(/\s+/).length;
-  const isWordLimitExceeded = wordCount > 20;
-
-  const handleDescChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const newDesc = e.target.value;
-    const newWordCount = newDesc.trim().split(/\s+/).length;
-    if (newWordCount <= 20) {
-      setTempDesc(newDesc);
-    }
   };
 
   const handleDeleteAccount = (userId: string) => {
@@ -162,28 +110,15 @@ const UserSetting: React.FC = () => {
                 Username
               </label>
               <div className="flex items-center">
-                {editingUsername ? (
-                  <input
-                    ref={usernameInputRef}
-                    type="text"
-                    value={tempUsername}
-                    onChange={(e) => setTempUsername(e.target.value)}
-                    className="bg-gray-700 bg-opacity-50 text-white px-4 py-2 rounded-l-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
-                  />
-                ) : (
-                  <input
-                    type="text"
-                    value={user.username}
-                    readOnly
-                    className="bg-gray-700 bg-opacity-50 text-white px-4 py-2 rounded-l-md w-full"
-                  />
-                )}
-                <button
-                  onClick={handleUsernameEdit}
-                  className="bg-blue-600 px-4 py-2 rounded-r-md hover:bg-blue-700 transition-colors duration-300"
-                >
-                  {editingUsername ? <Save size={18} /> : <Edit2 size={18} />}
-                </button>
+                <input
+                  type="text"
+                  value={user.username}
+                  readOnly
+                  className="bg-gray-700 bg-opacity-50 text-white px-4 py-2 rounded-md w-full"
+                />
+                <span className="bg-green-600 mx-2 p-1 rounded-full h-full hover:bg-green-700 transition-colors duration-300">
+                  <Check size={10} className="text-white" />
+                </span>
               </div>
             </div>
 
@@ -205,38 +140,13 @@ const UserSetting: React.FC = () => {
               </label>
               <div className="flex flex-col">
                 <div className="flex items-start">
-                  {editingDesc ? (
-                    <textarea
-                      ref={descTextareaRef}
-                      value={tempDesc}
-                      onChange={handleDescChange}
-                      className="bg-gray-700 bg-opacity-50 text-white px-4 py-2 rounded-l-md w-full resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
-                      rows={4}
-                    />
-                  ) : (
-                    <textarea
-                      value={user.desc || ""}
-                      readOnly
-                      className="bg-gray-700 bg-opacity-50 text-white px-4 py-2 rounded-l-md w-full resize-none"
-                      rows={4}
-                    />
-                  )}
-                  <button
-                    onClick={handleDescriptionEdit}
-                    className="bg-blue-600 px-4 py-2 rounded-r-md h-full hover:bg-blue-700 transition-colors duration-300"
-                  >
-                    {editingDesc ? <Save size={18} /> : <Edit2 size={18} />}
-                  </button>
+                  <textarea
+                    value={user.desc || ""}
+                    readOnly
+                    className="bg-gray-700 bg-opacity-50 text-white px-4 py-2 rounded-l-md w-full resize-none"
+                    rows={4}
+                  />
                 </div>
-                {editingDesc && (
-                  <div
-                    className={`text-sm mt-2 ${
-                      isWordLimitExceeded ? "text-red-400" : "text-gray-400"
-                    }`}
-                  >
-                    {wordCount}/20 words
-                  </div>
-                )}
               </div>
             </div>
 
