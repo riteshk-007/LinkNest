@@ -4,7 +4,7 @@ const Schema = `#graphql
     email: String!
     username: String!
     password: String!
-    desc: String
+    desc: String!
     image: String
     createdAt: String!
     updatedAt: String!
@@ -26,7 +26,7 @@ const Schema = `#graphql
   }
 
   type Mutation {
-    createUser(email: String!, username: String!, password: String!): User!
+    createUser(email: String!, username: String!, password: String!, desc: String!): User!
     createLink(url: String!, title: String!, image: String, userId: ID!): Link!
     deleteLink(id: ID!): Link!
     deleteUser(id: ID!): User!

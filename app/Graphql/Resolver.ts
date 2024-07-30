@@ -26,7 +26,8 @@ const Resolvers = {
         if (
           email.trim() === "" ||
           username.trim() === "" ||
-          password.trim() === ""
+          password.trim() === "" ||
+          desc.trim() === ""
         ) {
           throw new UserInputError("Please fill in all fields");
         }
