@@ -8,6 +8,7 @@ import Logo from "../../_components/Logo";
 import { GET_USER } from "@/app/Graphql/Queries";
 import { CustomSession, User, UserProfileProps } from "@/types/types";
 import { LinkIcon } from "lucide-react";
+import Error from "./Error";
 
 const UserProfile: React.FC<UserProfileProps> = ({
   backgroundColor,
@@ -29,9 +30,26 @@ const UserProfile: React.FC<UserProfileProps> = ({
 
   const user = data?.user;
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
-  if (!user) return <p>User not found</p>;
+  if (loading)
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-4 border-gray-300"></div>
+      </div>
+    );
+  if (error)
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Error>{error.message}</Error>
+      </div>
+    );
+  if (!user)
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Error>
+          No user found with the provided ID. Please try again later.
+        </Error>
+      </div>
+    );
 
   return (
     <div className="flex flex-col h-full" style={backgroundStyle}>
