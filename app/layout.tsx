@@ -10,6 +10,16 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "LINK NEST",
   description: "A collection of all social media links in one place.",
+  openGraph: {
+    images: [
+      {
+        url: "https://link-nest.vercel.app/opengraph-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Link Nest - A collection of all social media links in one place.",
+      },
+    ],
+  },
 };
 
 export default function RootLayout({
