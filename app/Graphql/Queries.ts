@@ -91,7 +91,6 @@ export const GET_USER_BY_USERNAME = gql`
       id
       email
       username
-      password
       desc
       image
       createdAt

@@ -111,7 +111,7 @@ export interface Link {
 export interface User {
   id: string;
   username: string;
-  description: string;
+  desc: string;
   image: string;
   links: Link[];
   __typename: string;

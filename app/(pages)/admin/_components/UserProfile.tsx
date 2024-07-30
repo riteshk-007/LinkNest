@@ -5,8 +5,8 @@ import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { useQuery } from "@apollo/client";
 import Logo from "../../_components/Logo";
-import { GET_USER } from "@/app/Graphql/Queries";
-import { CustomSession, User, UserProfileProps } from "@/types/types";
+import { GET_USER, GET_USER_BY_USERNAME } from "@/app/Graphql/Queries";
+import { CustomSession, User, UserProfileProps, Link } from "@/types/types";
 import { LinkIcon } from "lucide-react";
 import Error from "./Error";
 import { Share } from "../../_components/Share";
@@ -25,12 +25,17 @@ const UserProfile: React.FC<UserProfileProps> = ({
       : { backgroundColor: backgroundColor || "black" };
 
   const { data: session } = useSession();
-  const sessionData = session as CustomSession;
-  const { data, loading, error } = useQuery<{ user: User }>(GET_USER, {
-    variables: { userId: sessionData?.user?.id ?? "" },
+  const sessionData = session as CustomSession | null;
+
+  const { data, loading, error } = useQuery<
+    { user: User } | { userByUsername: User }
+  >(sessionData ? GET_USER : GET_USER_BY_USERNAME, {
+    variables: sessionData ? { userId: sessionData.user?.id } : { username },
   });
 
-  const user = data?.user;
+  const user: User | undefined = sessionData
+    ? (data as { user: User })?.user
+    : (data as { userByUsername: User })?.userByUsername;
 
   if (loading)
     return (
@@ -48,7 +53,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
     return (
       <div className="flex justify-center items-center h-screen">
         <Error>
-          No user found with the provided ID. Please try again later.
+          No user found with the provided information. Please try again later.
         </Error>
       </div>
     );
@@ -62,10 +67,10 @@ const UserProfile: React.FC<UserProfileProps> = ({
       <div className="flex-shrink-0 pt-8 pb-4">
         {/* User Image */}
         <div className="flex justify-center">
-          {sessionData.user?.image ? (
+          {user.image ? (
             <Image
-              src={sessionData.user?.image}
-              alt={sessionData.user?.username}
+              src={user.image}
+              alt={user.username}
               width={100}
               height={100}
               className="rounded-full object-cover"
@@ -79,19 +84,17 @@ const UserProfile: React.FC<UserProfileProps> = ({
 
         {/* Username */}
         <h2 className="text-2xl font-bold text-center mt-4 text-white">
-          {sessionData.user?.username}
+          {user.username}
         </h2>
 
         {/* Description */}
-        <p className="text-center text-white mt-2 px-6 text-sm">
-          {sessionData.user?.desc}
-        </p>
+        <p className="text-center text-white mt-2 px-6 text-sm">{user.desc}</p>
       </div>
 
       {/* Link List */}
       <div className="flex items-center flex-col justify-start pb-16 pt-4 overflow-y-auto custom-scrollbar px-4">
-        {user.links.length > 0 ? (
-          user.links.map((link) => (
+        {user.links && user.links.length > 0 ? (
+          user.links.map((link: Link) => (
             <a
               key={link.id}
               href={link.url}
