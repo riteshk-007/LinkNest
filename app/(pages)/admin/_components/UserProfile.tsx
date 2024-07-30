@@ -96,7 +96,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
       </div>
 
       {/* Logo */}
-      <div className="w-52 mx-auto absolute bottom-0 left-1/2 flex items-center justify-center mb-3 bg-black p-2 rounded-lg -translate-x-1/2">
+      <div className="w-52 h-10 mx-auto absolute bottom-0 left-1/2 flex items-center justify-center mb-3 bg-black p-2 rounded-lg -translate-x-1/2">
         <Logo />
       </div>
     </div>
