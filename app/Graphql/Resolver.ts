@@ -15,6 +15,20 @@ const Resolvers = {
         throw new UserInputError("Failed to get user");
       }
     },
+    userByUsername: async (_: any, args: { username: string }) => {
+      try {
+        const user = await prisma.user.findUnique({
+          where: { username: args.username.toLowerCase() },
+          include: { links: true },
+        });
+        if (!user) {
+          throw new UserInputError("User not found");
+        }
+        return user;
+      } catch (error) {
+        throw new UserInputError("Failed to get user");
+      }
+    },
   },
   Mutation: {
     createUser: async (
@@ -51,7 +65,7 @@ const Resolvers = {
         const user = await prisma.user.create({
           data: {
             email,
-            username,
+            username: username.toLowerCase(),
             password: hashedPassword,
             desc,
           },

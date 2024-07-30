@@ -23,6 +23,7 @@ const Schema = `#graphql
   type Query {
     users: [User!]!
     user(id: ID!): User
+    userByUsername(username: String!): User
   }
 
   type Mutation {

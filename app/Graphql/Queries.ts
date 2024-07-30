@@ -84,3 +84,26 @@ export const DELETE_USER = gql`
     }
   }
 `;
+
+export const GET_USER_BY_USERNAME = gql`
+  query Query($username: String!) {
+    userByUsername(username: $username) {
+      id
+      email
+      username
+      password
+      desc
+      image
+      createdAt
+      updatedAt
+      isPremium
+      links {
+        id
+        url
+        title
+        image
+        userId
+      }
+    }
+  }
+`;
