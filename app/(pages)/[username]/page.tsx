@@ -23,7 +23,7 @@ const UsernamePage = ({ params }: PageProps) => {
       <UserProfile
         gradientFrom="#4a90e2"
         gradientTo="#81c784"
-        // username={username}
+        username={username}
       />
     </div>
   );

@@ -96,6 +96,7 @@ export interface UserProfileProps {
   backgroundColor?: string;
   gradientFrom?: string;
   gradientTo?: string;
+  username?: string;
 }
 
 export interface Link {

@@ -9,11 +9,13 @@ import { GET_USER } from "@/app/Graphql/Queries";
 import { CustomSession, User, UserProfileProps } from "@/types/types";
 import { LinkIcon } from "lucide-react";
 import Error from "./Error";
+import { Share } from "../../_components/Share";
 
 const UserProfile: React.FC<UserProfileProps> = ({
   backgroundColor,
   gradientFrom,
   gradientTo,
+  username,
 }) => {
   const backgroundStyle: React.CSSProperties =
     gradientFrom && gradientTo
@@ -52,7 +54,10 @@ const UserProfile: React.FC<UserProfileProps> = ({
     );
 
   return (
-    <div className="flex flex-col h-full" style={backgroundStyle}>
+    <div className="flex flex-col h-screen" style={backgroundStyle}>
+      <div className="absolute right-6 top-6">
+        <Share />
+      </div>
       {/* User Info Section */}
       <div className="flex-shrink-0 pt-8 pb-4">
         {/* User Image */}
@@ -85,32 +90,44 @@ const UserProfile: React.FC<UserProfileProps> = ({
 
       {/* Link List */}
       <div className="flex items-center flex-col justify-start pb-16 pt-4 overflow-y-auto custom-scrollbar px-4">
-        {user.links.map((link) => (
-          <a
-            key={link.id}
-            href={link.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex w-full max-w-md items-center bg-white bg-opacity-20 rounded-lg p-3 mb-3 hover:bg-opacity-30 transition-all"
-          >
-            {link.image ? (
-              <Image
-                src={link.image}
-                alt={link.title}
-                width={30}
-                height={30}
-                className="rounded-lg"
-              />
-            ) : (
-              <LinkIcon
-                size={24}
-                color="white"
-                className="bg-gradient-to-br from-blue-500 to-purple-600 w-8 h-8 rounded-full p-1"
-              />
-            )}
-            <span className="text-white font-medium ml-3">{link.title}</span>
-          </a>
-        ))}
+        {user.links.length > 0 ? (
+          user.links.map((link) => (
+            <a
+              key={link.id}
+              href={link.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex w-full max-w-md items-center bg-white bg-opacity-20 rounded-lg p-3 mb-3 hover:bg-opacity-30 transition-all"
+            >
+              {link.image ? (
+                <Image
+                  src={link.image}
+                  alt={link.title}
+                  width={30}
+                  height={30}
+                  className="rounded-lg"
+                />
+              ) : (
+                <LinkIcon
+                  size={24}
+                  color="white"
+                  className="bg-gradient-to-br from-blue-500 to-purple-600 w-8 h-8 rounded-full p-1"
+                />
+              )}
+              <span className="text-white font-medium ml-3">{link.title}</span>
+            </a>
+          ))
+        ) : (
+          <div className="flex flex-col items-center justify-center h-full gap-1 p-4">
+            <LinkIcon size={30} color="white" />
+            <p className="text-muted text-center text-lg font-semibold mb-2">
+              No links found
+            </p>
+            <p className="text-muted-foreground text-center">
+              Add some links to your profile to get started.
+            </p>
+          </div>
+        )}
       </div>
 
       {/* Logo */}
