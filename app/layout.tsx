@@ -10,6 +10,9 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "LINK NEST",
   description: "A collection of all social media links in one place.",
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_BASE_URL || "https://link-nest.vercel.app"
+  ),
   openGraph: {
     images: [
       {
