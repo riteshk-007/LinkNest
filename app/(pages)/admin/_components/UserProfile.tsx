@@ -58,6 +58,10 @@ const UserProfile: React.FC<UserProfileProps> = ({
       </div>
     );
 
+  const imageSrc = sessionData?.user?.image || user.image;
+  const imageAlt = sessionData?.user?.username || user.username;
+  const imageSize = sessionData?.user?.image ? 128 : 100;
+
   return (
     <div className="flex flex-col h-screen" style={backgroundStyle}>
       <div className="absolute right-6 top-6">
@@ -67,14 +71,8 @@ const UserProfile: React.FC<UserProfileProps> = ({
       <div className="flex-shrink-0 pt-8 pb-4">
         {/* User Image */}
         <div className="flex justify-center">
-          {user.image ? (
-            <Image
-              src={user.image}
-              alt={user.username}
-              width={100}
-              height={100}
-              className="rounded-full object-cover"
-            />
+          {imageSrc ? (
+            renderImage(imageSrc, imageAlt, imageSize, imageSize)
           ) : (
             <div className="w-32 h-32 bg-black rounded-full flex items-center justify-center">
               <Logo />
@@ -84,11 +82,13 @@ const UserProfile: React.FC<UserProfileProps> = ({
 
         {/* Username */}
         <h2 className="text-2xl font-bold text-center mt-4 text-white">
-          {user.username}
+          {sessionData ? sessionData.user?.username : user.username}
         </h2>
 
         {/* Description */}
-        <p className="text-center text-white mt-2 px-6 text-sm">{user.desc}</p>
+        <p className="text-center text-white mt-2 px-6 text-sm">
+          {sessionData ? sessionData.user?.desc : user.desc}
+        </p>
       </div>
 
       {/* Link List */}
@@ -142,3 +142,18 @@ const UserProfile: React.FC<UserProfileProps> = ({
 };
 
 export default UserProfile;
+
+const renderImage = (
+  src: string,
+  alt: string,
+  width: number,
+  height: number
+): JSX.Element => (
+  <Image
+    src={src}
+    alt={alt}
+    width={width}
+    height={height}
+    className="rounded-full object-cover"
+  />
+);
