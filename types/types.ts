@@ -93,11 +93,25 @@ export interface LinkItem {
 }
 
 export interface UserProfileProps {
-  userImage?: string;
-  username: string;
-  description: string;
-  links: LinkItem[];
   backgroundColor?: string;
   gradientFrom?: string;
   gradientTo?: string;
+}
+
+export interface Link {
+  id: string;
+  image: string;
+  title: string;
+  url: string;
+  userId: string;
+  __typename: string;
+}
+
+export interface User {
+  id: string;
+  username: string;
+  description: string;
+  image: string;
+  links: Link[];
+  __typename: string;
 }

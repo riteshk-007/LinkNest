@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from "react";
 import LinkCard from "./LinkCard";
-import { Facebook } from "lucide-react";
 import { useMutation, useQuery } from "@apollo/client";
 import { DELETE_LINK, GET_USER } from "@/app/Graphql/Queries";
 import { useSession } from "next-auth/react";
