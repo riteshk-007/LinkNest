@@ -16,18 +16,23 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { CustomSession } from "@/types/types";
+import { CustomSession, ShareProps } from "@/types/types";
+import { useParams } from "next/navigation";
 
 export function Share() {
   const { data: session } = useSession();
+  const params = useParams<ShareProps>();
 
   const sessionData = session as CustomSession;
 
   const [open, setOpen] = useState(false);
 
-  const shareUrl = `${
-    process.env.NEXT_PUBLIC_BASE_URL
-  }/${sessionData?.user?.username.toLowerCase()}`;
+  const username =
+    sessionData?.user?.username?.toLowerCase() ||
+    params.username?.toLowerCase() ||
+    "";
+
+  const shareUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/${username}`;
 
   const handleCopy = async () => {
     try {

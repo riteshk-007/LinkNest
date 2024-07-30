@@ -116,3 +116,7 @@ export interface User {
   links: Link[];
   __typename: string;
 }
+
+export type ShareProps = {
+  username: string;
+};
