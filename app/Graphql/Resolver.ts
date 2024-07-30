@@ -19,10 +19,10 @@ const Resolvers = {
   Mutation: {
     createUser: async (
       _: any,
-      args: { email: string; username: string; password: string }
+      args: { email: string; username: string; password: string; desc: string }
     ) => {
       try {
-        const { email, username, password } = args;
+        const { email, username, password, desc } = args;
         if (
           email.trim() === "" ||
           username.trim() === "" ||
@@ -52,6 +52,7 @@ const Resolvers = {
             email,
             username,
             password: hashedPassword,
+            desc,
           },
         });
         return user;

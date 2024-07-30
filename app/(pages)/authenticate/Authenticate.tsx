@@ -189,6 +189,35 @@ const AuthForm: React.FC = () => {
               </motion.span>
             )}
           </motion.div>
+          {!isLogin && (
+            <motion.div variants={itemVariants}>
+              <label
+                htmlFor="desc"
+                className="block text-sm font-medium text-gray-300"
+              >
+                Description
+              </label>
+              <input
+                id="desc"
+                type="text"
+                {...register("desc", {
+                  required: "Description is required",
+                })}
+                className="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                placeholder="A short description about yourself"
+              />
+              {errors.desc && (
+                <motion.span
+                  className="text-xs text-red-400"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {errors.desc.message}
+                </motion.span>
+              )}
+            </motion.div>
+          )}
           <motion.div variants={itemVariants}>
             <label
               htmlFor="password"
