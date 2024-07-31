@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState } from "react";
 import { useSession } from "next-auth/react";
 import { Copy, Share2 } from "lucide-react";
@@ -16,21 +17,39 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { CustomSession, ShareProps } from "@/types/types";
+import { CustomSession } from "@/types/types";
 import { useParams } from "next/navigation";
+import { useQuery } from "@apollo/client";
+import { GET_USER, GET_USER_BY_USERNAME } from "@/app/Graphql/Queries";
+
+interface User {
+  id: string;
+  username: string;
+  desc: string;
+  image: string;
+}
 
 export function Share() {
   const { data: session } = useSession();
-  const params = useParams<ShareProps>();
+  const sessionData = session as CustomSession | null;
 
-  const sessionData = session as CustomSession;
+  const params = useParams();
+  const paramUsername = params.username;
+
+  const { data: userData } = useQuery<{ user: User; userByUsername: User }>(
+    sessionData ? GET_USER : GET_USER_BY_USERNAME,
+    {
+      variables: sessionData
+        ? { userId: sessionData.user?.id }
+        : { username: paramUsername },
+    }
+  );
+
+  const username = sessionData
+    ? userData?.user?.username || paramUsername
+    : userData?.userByUsername?.username || paramUsername;
 
   const [open, setOpen] = useState(false);
-
-  const username =
-    sessionData?.user?.username?.toLowerCase() ||
-    params.username?.toLowerCase() ||
-    "";
 
   const shareUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/${username}`;
 
@@ -76,7 +95,7 @@ export function Share() {
               onClick={handleCopy}
               size="sm"
               className="px-3"
-              variant={"secondary"}
+              variant="secondary"
             >
               <span className="sr-only">Copy</span>
               <Copy className="h-4 w-4" />
