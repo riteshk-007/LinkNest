@@ -120,3 +120,18 @@ export interface User {
 export type ShareProps = {
   username: string;
 };
+
+export interface Theme {
+  id: string;
+  image?: string;
+  isPremium: boolean;
+  gradientFrom: string;
+  gradientTo: string;
+  angle: number;
+}
+
+export interface ThemeCardProps {
+  theme: Theme;
+  isSelected: boolean;
+  onSelect: (theme: Theme) => void;
+}

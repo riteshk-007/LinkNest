@@ -38,8 +38,11 @@ model Link {
 }
 
 model Theme {
-  id        String  @id @default(auto()) @map("_id") @db.ObjectId
-  image     String
-  isPremium Boolean @default(false)
-  users     User[]
+  id           String  @id @default(auto()) @map("_id") @db.ObjectId
+  image        String?
+  isPremium    Boolean @default(false)
+  gradientFrom String
+  gradientTo   String
+  angle        Int
+  users        User[]
 }
