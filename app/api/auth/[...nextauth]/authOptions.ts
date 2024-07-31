@@ -2,6 +2,7 @@ import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import prisma from "@/DB/db.config";
+import { CustomJWT, CustomSession } from "@/types/types";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -40,13 +41,17 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     jwt: async ({ token, user }) => {
       if (user) {
-        token.user = user;
+        (token as CustomJWT).userId = user.id;
       }
       return token;
     },
     session: async ({ session, token }) => {
-      if (token?.user) {
-        session.user = token.user as any;
+      const customToken = token as CustomJWT;
+      if (customToken?.userId) {
+        (session as CustomSession).user = {
+          ...session.user,
+          id: customToken.userId,
+        };
       }
       return session;
     },
