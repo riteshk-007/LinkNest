@@ -125,6 +125,7 @@ export interface CustomSession extends Session {
     name?: string | null;
     email?: string | null;
     image?: string | null;
+    username?: string | null;
   };
 }
 

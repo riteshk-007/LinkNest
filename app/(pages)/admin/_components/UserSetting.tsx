@@ -15,16 +15,22 @@ import {
 import { signOut, useSession } from "next-auth/react";
 import { CustomSession } from "@/types/types";
 import Image from "next/image";
-import { useMutation } from "@apollo/client";
-import { DELETE_USER } from "@/app/Graphql/Queries";
+import { useMutation, useQuery } from "@apollo/client";
+import { DELETE_USER, GET_USER } from "@/app/Graphql/Queries";
 import { toast } from "sonner";
 
 const UserSetting: React.FC = () => {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
 
   const sessionData = session as CustomSession | null;
-  const user = sessionData?.user;
 
+  const { data, loading, error } = useQuery(GET_USER, {
+    variables: { userId: sessionData?.user?.id ? sessionData.user.id : "" },
+  });
+
+  const user = data?.user;
+
+  console.log(user);
   const [deleteUser] = useMutation(DELETE_USER, {
     onCompleted: () => {
       toast.success("Account deleted successfully");
@@ -47,7 +53,7 @@ const UserSetting: React.FC = () => {
     deleteUser({ variables: { deleteUserId: userId } });
   };
 
-  if (status === "loading") {
+  if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
         <div className="animate-spin rounded-full h-32 w-32 border-b-4 border-gray-300"></div>
@@ -55,8 +61,12 @@ const UserSetting: React.FC = () => {
     );
   }
 
-  if (status === "unauthenticated" || !user) {
-    return <div>Please log in to view your account settings.</div>;
+  if (error) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        Please log in to view your account settings.
+      </div>
+    );
   }
 
   return (
@@ -99,7 +109,11 @@ const UserSetting: React.FC = () => {
               <h2 className="text-2xl font-semibold mb-1">{user.username}</h2>
               <p className="text-blue-400">{user.email}</p>
               <p className="text-sm mt-2">
-                Member since: {new Date(user.createdAt).toLocaleDateString()}
+                Member since:{" "}
+                {new Date(parseInt(user.createdAt)).toLocaleDateString("en-GB")}
+              </p>
+              <p className="text-sm mt-2">
+                All links: {user.links ? user.links.length : 0}
               </p>
             </div>
           </div>

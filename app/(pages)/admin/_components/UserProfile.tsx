@@ -4,6 +4,7 @@ import React from "react";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { useQuery } from "@apollo/client";
+import { useParams } from "next/navigation";
 import Logo from "../../_components/Logo";
 import { GET_USER, GET_USER_BY_USERNAME } from "@/app/Graphql/Queries";
 import { CustomSession, User, UserProfileProps, Link } from "@/types/types";
@@ -15,7 +16,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
   backgroundColor,
   gradientFrom,
   gradientTo,
-  username,
+  username: propUsername,
 }) => {
   const backgroundStyle: React.CSSProperties =
     gradientFrom && gradientTo
@@ -27,15 +28,27 @@ const UserProfile: React.FC<UserProfileProps> = ({
   const { data: session } = useSession();
   const sessionData = session as CustomSession | null;
 
+  const params = useParams();
+  const username = params.username || propUsername;
+
   const { data, loading, error } = useQuery<
     { user: User } | { userByUsername: User }
-  >(sessionData ? GET_USER : GET_USER_BY_USERNAME, {
-    variables: sessionData ? { userId: sessionData.user?.id } : { username },
-  });
+  >(
+    sessionData && sessionData.user?.username === username
+      ? GET_USER
+      : GET_USER_BY_USERNAME,
+    {
+      variables:
+        sessionData && sessionData.user?.username === username
+          ? { userId: sessionData.user?.id }
+          : { username },
+    }
+  );
 
-  const user: User | undefined = sessionData
-    ? (data as { user: User })?.user
-    : (data as { userByUsername: User })?.userByUsername;
+  const user: User | undefined =
+    sessionData && sessionData.user?.username === username
+      ? (data as { user: User })?.user
+      : (data as { userByUsername: User })?.userByUsername;
 
   if (loading)
     return (
@@ -58,9 +71,9 @@ const UserProfile: React.FC<UserProfileProps> = ({
       </div>
     );
 
-  const imageSrc = sessionData?.user?.image || user.image;
-  const imageAlt = sessionData?.user?.username || user.username;
-  const imageSize = sessionData?.user?.image ? 128 : 100;
+  const imageSrc = user.image;
+  const imageAlt = user.username;
+  const imageSize = 128;
 
   return (
     <div className="flex flex-col h-screen" style={backgroundStyle}>
@@ -82,12 +95,12 @@ const UserProfile: React.FC<UserProfileProps> = ({
 
         {/* Username */}
         <h2 className="text-2xl font-bold text-center mt-4 text-white">
-          {sessionData ? sessionData.user?.username : user.username}
+          {user.username}
         </h2>
 
         {/* Description */}
         <p className="text-center text-white mt-2 px-6 text-sm">
-          {sessionData ? sessionData.user?.desc : user.desc}
+          {user.desc || "No description provided."}
         </p>
       </div>
 
