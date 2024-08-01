@@ -57,7 +57,7 @@ const Resolvers = {
         const hashedPassword = await bcryptjs.hash(password, 12);
 
         const usernameCheck = await prisma.user.findUnique({
-          where: { username: username },
+          where: { username: username.toLocaleLowerCase() },
         });
         if (usernameCheck) {
           throw new UserInputError("Username already exists");
