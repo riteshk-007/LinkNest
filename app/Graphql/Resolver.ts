@@ -143,6 +143,66 @@ const Resolvers = {
         throw new UserInputError("Failed to delete user");
       }
     },
+    updateUser: async (
+      _: any,
+      args: {
+        id: string;
+        email?: string;
+        username?: string;
+        password?: string;
+        desc?: string;
+        image?: string;
+        isPremium?: boolean;
+      }
+    ) => {
+      const { id, email, username, password, desc, image, isPremium } = args;
+
+      // Validate input
+      if (!id.trim()) {
+        throw new UserInputError("User ID is required");
+      }
+
+      // Check if user exists
+      const existingUser = await prisma.user.findUnique({
+        where: { id },
+      });
+      if (!existingUser) {
+        throw new UserInputError("User not found");
+      }
+      // Prepare update data
+      const updateData: any = {};
+
+      if (email) updateData.email = email;
+      if (username) {
+        const usernameCheck = await prisma.user.findUnique({
+          where: { username: username.toLowerCase() },
+        });
+        if (usernameCheck) {
+          throw new UserInputError("Username already exists");
+        }
+        updateData.username = username.toLowerCase();
+      }
+      if (password) {
+        if (password.length < 6) {
+          throw new UserInputError("Password must be at least 6 characters");
+        }
+        updateData.password = await bcryptjs.hash(password, 12);
+      }
+      if (desc) updateData.desc = desc;
+      if (image) updateData.image = image;
+      if (isPremium !== undefined) updateData.isPremium = isPremium;
+
+      try {
+        // Update the user
+        const updatedUser = await prisma.user.update({
+          where: { id },
+          data: updateData,
+        });
+        return updatedUser;
+      } catch (error) {
+        throw new Error("Failed to update user");
+      }
+    },
   },
 };
 

@@ -113,3 +113,35 @@ export const GET_USER_BY_USERNAME = gql`
     }
   }
 `;
+
+export const UPDATE_USER = gql`
+  mutation UpdateUser(
+    $updateUserId: ID!
+    $email: String
+    $username: String
+    $password: String
+    $desc: String
+    $image: String
+    $isPremium: Boolean
+  ) {
+    updateUser(
+      id: $updateUserId
+      email: $email
+      username: $username
+      password: $password
+      desc: $desc
+      image: $image
+      isPremium: $isPremium
+    ) {
+      id
+      email
+      username
+      password
+      desc
+      image
+      createdAt
+      updatedAt
+      isPremium
+    }
+  }
+`;
