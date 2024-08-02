@@ -16,7 +16,7 @@ import { signOut, useSession } from "next-auth/react";
 import { CustomSession } from "@/types/types";
 import Image from "next/image";
 import { useMutation, useQuery } from "@apollo/client";
-import { DELETE_USER, GET_USER } from "@/app/Graphql/Queries";
+import { DELETE_USER, GET_USER, UPDATE_USER } from "@/app/Graphql/Queries";
 import { toast } from "sonner";
 import { useEffect, useRef, useState } from "react";
 
@@ -28,6 +28,21 @@ const UserSetting: React.FC = () => {
 
   const { data, loading, error } = useQuery(GET_USER, {
     variables: { userId: sessionData?.user?.id ? sessionData.user.id : "" },
+  });
+
+  const [UpdateUser] = useMutation(UPDATE_USER, {
+    refetchQueries: [
+      {
+        query: GET_USER,
+        variables: { userId: sessionData?.user?.id ? sessionData.user.id : "" },
+      },
+    ],
+    onCompleted: () => {
+      toast.success("User updated successfully");
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
   });
 
   const user = data?.user;
@@ -86,15 +101,23 @@ const UserSetting: React.FC = () => {
   };
 
   const handleSaveUsername = () => {
-    console.log("New username:", username);
     setEditingUsername(false);
-    // Here you would typically update the username in your backend
+    UpdateUser({
+      variables: {
+        updateUserId: user.id,
+        username,
+      },
+    });
   };
 
   const handleSaveDesc = () => {
-    console.log("New description:", desc);
     setEditingDesc(false);
-    // Here you would typically update the description in your backend
+    UpdateUser({
+      variables: {
+        updateUserId: user.id,
+        desc,
+      },
+    });
   };
 
   const countWords = (text: string): number => {
