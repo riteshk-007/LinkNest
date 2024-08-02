@@ -94,7 +94,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
         </div>
 
         {/* Username */}
-        <h2 className="text-2xl font-bold text-center mt-4 text-white">
+        <h2 className="text-2xl font-bold text-center mt-4 text-white capitalize">
           {user.username}
         </h2>
 

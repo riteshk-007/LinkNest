@@ -185,7 +185,9 @@ const UserSetting: React.FC = () => {
               </label>
             </div>
             <div className="md:ml-8 text-center md:text-left">
-              <h2 className="text-2xl font-semibold mb-1">{user.username}</h2>
+              <h2 className="text-2xl font-semibold mb-1 capitalize">
+                {user.username}
+              </h2>
               <p className="text-blue-400">{user.email}</p>
               <p className="text-sm mt-2">
                 Member since:{" "}
