@@ -20,6 +20,13 @@ const Schema = `#graphql
   userId: ID
 }
 
+type Image {
+  id: ID!
+  url: String!
+  key: String!
+  user: User!
+  userId: String!
+}
 
   type Query {
     users: [User!]!
@@ -33,6 +40,7 @@ const Schema = `#graphql
     deleteLink(id: ID!): Link!
     deleteUser(id: ID!): User!
     updateUser(id: ID!,email: String,username: String,password: String,desc: String,image: String,isPremium: Boolean): User!
+    updateImage(userId: ID!, url: String!, key: String!): Image!
   }
 `;
 

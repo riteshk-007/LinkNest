@@ -135,3 +135,14 @@ export const UPDATE_USER = gql`
     }
   }
 `;
+
+export const UPDATE_IMAGE = gql`
+  mutation Mutation($userId: ID!, $url: String!, $key: String!) {
+    updateImage(userId: $userId, url: $url, key: $key) {
+      id
+      url
+      key
+      userId
+    }
+  }
+`;

@@ -201,6 +201,32 @@ const Resolvers = {
         throw new Error("Failed to update user");
       }
     },
+    updateImage: async (args: { userId: string; url: string; key: string }) => {
+      const { userId, url, key } = args;
+
+      // Check if an image already exists for the user
+      const existingImage = await prisma.image.findUnique({
+        where: { userId },
+      });
+
+      // If an image exists, delete it
+      if (existingImage) {
+        await prisma.image.delete({
+          where: { id: existingImage.id },
+        });
+      }
+
+      // Create a new image
+      const newImage = await prisma.image.create({
+        data: {
+          url,
+          key,
+          userId,
+        },
+      });
+
+      return newImage;
+    },
   },
 };
 
