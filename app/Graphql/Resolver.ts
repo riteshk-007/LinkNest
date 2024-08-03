@@ -1,6 +1,7 @@
 import bcryptjs from "bcryptjs";
 import { UserInputError } from "apollo-server-micro";
 import prisma from "@/DB/db.config";
+import { utapi } from "@/utils/RemoveImageForServer";
 
 const Resolvers = {
   Query: {
@@ -201,31 +202,43 @@ const Resolvers = {
         throw new Error("Failed to update user");
       }
     },
-    updateImage: async (args: { userId: string; url: string; key: string }) => {
-      const { userId, url, key } = args;
+    updateImage: async (
+      _: any,
+      args: { userId: string; url: string; key: string }
+    ) => {
+      try {
+        console.log(args);
+        const { userId, url, key } = args;
 
-      // Check if an image already exists for the user
-      const existingImage = await prisma.image.findUnique({
-        where: { userId },
-      });
-
-      // If an image exists, delete it
-      if (existingImage) {
-        await prisma.image.delete({
-          where: { id: existingImage.id },
+        // Check if an image already exists for the user
+        const existingImage = await prisma.image.findUnique({
+          where: { userId },
         });
+
+        // If an image exists, delete it
+        if (existingImage) {
+          await utapi.deleteFiles([existingImage.key]);
+          await prisma.image.delete({
+            where: { id: existingImage.id, userId: userId },
+          });
+        }
+
+        // Create a new image
+        const newImage = await prisma.image.create({
+          data: {
+            url,
+            key,
+            userId,
+          },
+        });
+
+        return newImage;
+      } catch (error) {
+        if (error instanceof UserInputError) {
+          throw error;
+        }
+        throw new Error("Failed to update image");
       }
-
-      // Create a new image
-      const newImage = await prisma.image.create({
-        data: {
-          url,
-          key,
-          userId,
-        },
-      });
-
-      return newImage;
     },
   },
 };

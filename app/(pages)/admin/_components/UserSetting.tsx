@@ -16,7 +16,12 @@ import { signOut, useSession } from "next-auth/react";
 import { CustomSession } from "@/types/types";
 import Image from "next/image";
 import { useMutation, useQuery } from "@apollo/client";
-import { DELETE_USER, GET_USER, UPDATE_USER } from "@/app/Graphql/Queries";
+import {
+  DELETE_USER,
+  GET_USER,
+  UPDATE_IMAGE,
+  UPDATE_USER,
+} from "@/app/Graphql/Queries";
 import { toast } from "sonner";
 import { useEffect, useRef, useState } from "react";
 import { IoMdLink } from "react-icons/io";
@@ -41,6 +46,21 @@ const UserSetting: React.FC = () => {
     ],
     onCompleted: () => {
       toast.success("User updated successfully");
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+
+  const [updateImage, { loading: imageLoading }] = useMutation(UPDATE_IMAGE, {
+    refetchQueries: [
+      {
+        query: GET_USER,
+        variables: { userId: sessionData?.user?.id ? sessionData.user.id : "" },
+      },
+    ],
+    onCompleted: () => {
+      toast.success("Image updated successfully");
     },
     onError: (error) => {
       toast.error(error.message);
@@ -89,8 +109,13 @@ const UserSetting: React.FC = () => {
     if (res && res.length > 0) {
       const uploadedImageUrl = res[0].url;
       setImageUrl(uploadedImageUrl);
-
-      console.log(res);
+      updateImage({
+        variables: {
+          userId: user.id,
+          url: uploadedImageUrl,
+          key: res[0].key,
+        },
+      });
     }
   };
 
@@ -189,7 +214,7 @@ const UserSetting: React.FC = () => {
                   className="mt-3 text-xs"
                   onClientUploadComplete={(res) => {
                     handleImageChange(res);
-                    toast.success("Image uploaded successfully");
+                    console.log("Image uploaded");
                   }}
                   onUploadError={(error: Error) => {
                     toast.error(error.message);
