@@ -20,6 +20,7 @@ import { DELETE_USER, GET_USER, UPDATE_USER } from "@/app/Graphql/Queries";
 import { toast } from "sonner";
 import { useEffect, useRef, useState } from "react";
 import { IoMdLink } from "react-icons/io";
+import { UploadButton } from "@/utils/uploadthing";
 
 const WORD_LIMIT = 20;
 
@@ -53,6 +54,7 @@ const UserSetting: React.FC = () => {
   const [username, setUsername] = useState<string>("");
   const [desc, setDesc] = useState<string>("");
   const [wordCount, setWordCount] = useState<number>(0);
+  const [imageUrl, setImageUrl] = useState<string>("");
 
   const usernameInputRef = useRef<HTMLInputElement>(null);
   const descTextareaRef = useRef<HTMLTextAreaElement>(null);
@@ -79,8 +81,17 @@ const UserSetting: React.FC = () => {
     },
   });
 
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    // Image upload logic here
+  const handleImageUpload = () => {
+    document.getElementById("image-upload")?.click();
+  };
+
+  const handleImageChange = (res: any) => {
+    if (res && res.length > 0) {
+      const uploadedImageUrl = res[0].url;
+      setImageUrl(uploadedImageUrl);
+
+      console.log(res);
+    }
   };
 
   const handleDeleteAccount = (userId: string) => {
@@ -159,11 +170,11 @@ const UserSetting: React.FC = () => {
         <div className="bg-gray-800 bg-opacity-50 backdrop-blur-lg rounded-xl p-8 mb-6 shadow-2xl border border-gray-700">
           <div className="flex flex-col md:flex-row items-center mb-8">
             <div className="relative mb-4 md:mb-0">
-              {user.image ? (
+              {user.image || imageUrl ? (
                 <Image
                   width={128}
                   height={128}
-                  src={user.image}
+                  src={imageUrl || user.image}
                   alt="User"
                   className="w-32 h-32 rounded-full object-cover border-4 border-blue-500 shadow-lg"
                 />
@@ -172,16 +183,17 @@ const UserSetting: React.FC = () => {
                   <User size={48} className="text-white" />
                 </div>
               )}
-              <label
-                htmlFor="image-upload"
-                className="absolute bottom-0 right-0 bg-blue-600 p-2 rounded-full cursor-pointer shadow-lg hover:bg-blue-700 transition-colors duration-300"
-              >
-                <Camera size={20} />
-                <input
-                  id="image-upload"
-                  type="file"
-                  className="hidden"
-                  onChange={handleImageUpload}
+              <label htmlFor="image-upload" onClick={handleImageUpload}>
+                <UploadButton
+                  endpoint="imageUploader"
+                  className="mt-3 text-xs"
+                  onClientUploadComplete={(res) => {
+                    handleImageChange(res);
+                    toast.success("Image uploaded successfully");
+                  }}
+                  onUploadError={(error: Error) => {
+                    toast.error(error.message);
+                  }}
                 />
               </label>
             </div>
@@ -254,18 +266,6 @@ const UserSetting: React.FC = () => {
                   </button>
                 )}
               </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium mb-2 text-blue-300">
-                Email
-              </label>
-              <input
-                type="email"
-                value={data?.user?.email || ""}
-                readOnly
-                className="bg-gray-700 bg-opacity-50 text-white px-4 py-2 rounded-md w-full"
-              />
             </div>
 
             <div>
