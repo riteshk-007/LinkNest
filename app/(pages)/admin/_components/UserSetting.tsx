@@ -19,6 +19,7 @@ import { useMutation, useQuery } from "@apollo/client";
 import { DELETE_USER, GET_USER, UPDATE_USER } from "@/app/Graphql/Queries";
 import { toast } from "sonner";
 import { useEffect, useRef, useState } from "react";
+import { IoMdLink } from "react-icons/io";
 
 const WORD_LIMIT = 20;
 
@@ -30,7 +31,7 @@ const UserSetting: React.FC = () => {
     variables: { userId: sessionData?.user?.id ? sessionData.user.id : "" },
   });
 
-  const [UpdateUser] = useMutation(UPDATE_USER, {
+  const [UpdateUser, { loading: loadData }] = useMutation(UPDATE_USER, {
     refetchQueries: [
       {
         query: GET_USER,
@@ -190,11 +191,31 @@ const UserSetting: React.FC = () => {
               </h2>
               <p className="text-blue-400">{user.email}</p>
               <p className="text-sm mt-2">
-                Member since:{" "}
-                {new Date(parseInt(user.createdAt)).toLocaleDateString("en-GB")}
+                <strong>Member since:</strong>{" "}
+                {new Date(parseInt(user.createdAt)).toLocaleDateString(
+                  "en-GB",
+                  {
+                    weekday: "long",
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  }
+                )}
               </p>
               <p className="text-sm mt-2">
-                All links: {user.links ? user.links.length : 0}
+                <strong>Updated:</strong>{" "}
+                {new Date(parseInt(user.updatedAt)).toLocaleString("en-GB", {
+                  weekday: "long",
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </p>
+              <p className="text-sm mt-2 flex items-center">
+                <IoMdLink className="mr-1 text-blue-500" size={20} />
+                <span>All links: {user.links ? user.links.length : 0}</span>
               </p>
             </div>
           </div>
@@ -213,7 +234,11 @@ const UserSetting: React.FC = () => {
                   className="bg-gray-700 bg-opacity-50 text-white px-4 py-2 rounded-md w-full"
                   ref={usernameInputRef}
                 />
-                {editingUsername ? (
+                {loadData ? (
+                  <div className="bg-blue-600 ml-2 p-2 rounded-full hover:bg-blue-700 transition-colors duration-300">
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-300"></div>
+                  </div>
+                ) : editingUsername ? (
                   <button
                     onClick={handleSaveUsername}
                     className="bg-green-600 ml-2 p-2 rounded-full hover:bg-green-700 transition-colors duration-300"
@@ -257,7 +282,11 @@ const UserSetting: React.FC = () => {
                     rows={4}
                     ref={descTextareaRef}
                   />
-                  {editingDesc ? (
+                  {loadData ? (
+                    <div className="bg-blue-600 ml-2 p-2 rounded-full hover:bg-blue-700 transition-colors duration-300">
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-300"></div>
+                    </div>
+                  ) : editingDesc ? (
                     <button
                       onClick={handleSaveDesc}
                       className="bg-green-600 ml-2 p-2 rounded-full hover:bg-green-700 transition-colors duration-300"

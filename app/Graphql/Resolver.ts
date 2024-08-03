@@ -33,15 +33,14 @@ const Resolvers = {
   Mutation: {
     createUser: async (
       _: any,
-      args: { email: string; username: string; password: string; desc: string }
+      args: { email: string; username: string; password: string }
     ) => {
       try {
-        const { email, username, password, desc } = args;
+        const { email, username, password } = args;
         if (
           email.trim() === "" ||
           username.trim() === "" ||
-          password.trim() === "" ||
-          desc.trim() === ""
+          password.trim() === ""
         ) {
           throw new UserInputError("Please fill in all fields");
         }
@@ -67,7 +66,6 @@ const Resolvers = {
             email,
             username: username.toLowerCase(),
             password: hashedPassword,
-            desc,
           },
         });
         return user;
