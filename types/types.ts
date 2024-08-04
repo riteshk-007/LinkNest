@@ -109,12 +109,13 @@ export type ShareProps = {
 };
 
 export interface Theme {
-  id: string;
-  image?: string;
-  isPremium: boolean;
+  angle: number;
   gradientFrom: string;
   gradientTo: string;
-  angle: number;
+  id: string;
+  image?: string | null;
+  isPremium: boolean;
+  __typename: string;
 }
 
 export interface ThemeCardProps {

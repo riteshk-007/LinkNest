@@ -41,6 +41,7 @@ type Theme {
     users: [User!]!
     user(id: ID!): User
     userByUsername(username: String!): User
+    themes: [Theme!]!
   }
 
   type Mutation {

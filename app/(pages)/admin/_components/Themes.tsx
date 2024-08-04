@@ -2,97 +2,30 @@
 import React, { useState } from "react";
 import { PaintBucket, Sparkles } from "lucide-react";
 import { Theme, ThemeCardProps } from "@/types/types";
-
-const themes: Theme[] = [
-  {
-    id: "1",
-    // image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb",
-    isPremium: false,
-    gradientFrom: "#ff7e5f",
-    gradientTo: "#feb47b",
-    angle: 45,
-  },
-  {
-    id: "2",
-    // image: "https://images.unsplash.com/photo-1532274402911-5a369e4c4bb5",
-    isPremium: false,
-    gradientFrom: "#6a11cb",
-    gradientTo: "#2575fc",
-    angle: 60,
-  },
-  {
-    id: "3",
-    // image: "https://images.unsplash.com/photo-1501854140801-50d01698950b",
-    isPremium: false,
-    gradientFrom: "#fc466b",
-    gradientTo: "#3f5efb",
-    angle: 135,
-  },
-  {
-    id: "4",
-    // image: "https://images.unsplash.com/photo-1505144808419-1957a94ca61e",
-    isPremium: false,
-    gradientFrom: "#52c234",
-    gradientTo: "#061700",
-    angle: 90,
-  },
-  {
-    id: "5",
-    // image: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05",
-    isPremium: false,
-    gradientFrom: "#ff9966",
-    gradientTo: "#ff5e62",
-    angle: 120,
-  },
-  {
-    id: "6",
-    image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e",
-    isPremium: true,
-    gradientFrom: "#8e2de2",
-    gradientTo: "#4a00e0",
-    angle: 30,
-  },
-  {
-    id: "7",
-    image: "https://images.unsplash.com/photo-1502082553048-f009c37129b9",
-    isPremium: true,
-    gradientFrom: "#f953c6",
-    gradientTo: "#b91d73",
-    angle: 75,
-  },
-  {
-    id: "8",
-    image: "https://images.unsplash.com/photo-1523712999610-f77fbcfc3843",
-    isPremium: true,
-    gradientFrom: "#1a2a6c",
-    gradientTo: "#b21f1f",
-    angle: 150,
-  },
-  {
-    id: "9",
-    image: "https://images.unsplash.com/photo-1470252649378-9c29740c9fa8",
-    isPremium: true,
-    gradientFrom: "#00b09b",
-    gradientTo: "#96c93d",
-    angle: 105,
-  },
-  {
-    id: "10",
-    image: "https://images.unsplash.com/photo-1518495973542-4542c06a5843",
-    isPremium: true,
-    gradientFrom: "#f12711",
-    gradientTo: "#f5af19",
-    angle: 165,
-  },
-];
+import { useQuery } from "@apollo/client";
+import { GET_THEMES } from "@/app/Graphql/Queries";
 
 const Themes: React.FC = () => {
   const [selectedTheme, setSelectedTheme] = useState<Theme | null>(null);
+
+  const { data, loading, error } = useQuery<{ themes: Theme[] }>(GET_THEMES);
 
   const handleThemeSelect = (theme: Theme) => {
     setSelectedTheme(theme);
     console.log("Selected Theme:", theme);
   };
+
+  const themes = data?.themes || [];
+
+  if (loading)
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-4 border-gray-300"></div>
+      </div>
+    );
+
+  if (error)
+    <div className="text-red-500 text-center">Error fetching themes</div>;
 
   return (
     <div className="container mx-auto px-4 py-8 bg-gradient-to-tl from-gray-900 to-black text-white min-h-screen">

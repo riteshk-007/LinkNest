@@ -172,3 +172,16 @@ export const CREATE_THEME = gql`
     }
   }
 `;
+
+export const GET_THEMES = gql`
+  query Query {
+    themes {
+      id
+      image
+      isPremium
+      gradientFrom
+      gradientTo
+      angle
+    }
+  }
+`;

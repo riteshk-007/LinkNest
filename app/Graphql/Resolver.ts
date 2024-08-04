@@ -30,6 +30,17 @@ const Resolvers = {
         throw new UserInputError("Failed to get user");
       }
     },
+    themes: async () => {
+      try {
+        const themes = await prisma.theme.findMany();
+        if (!themes) {
+          throw new UserInputError("Themes not found");
+        }
+        return themes;
+      } catch (error) {
+        throw new UserInputError("Failed to get themes");
+      }
+    },
   },
   Mutation: {
     createUser: async (
