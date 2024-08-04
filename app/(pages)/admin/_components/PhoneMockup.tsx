@@ -1,7 +1,29 @@
+"use client";
 import { PhoneMockupProps } from "@/types/types";
 import React from "react";
 
 const PhoneMockup: React.FC<PhoneMockupProps> = ({ children }) => {
+  const [currentTime, setCurrentTime] = React.useState(new Date());
+
+  React.useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 60000);
+
+    return () => clearInterval(intervalId);
+  }, []);
+
+  const formatTime = (date: Date) => {
+    const hours = date
+      .getHours()
+      .toString()
+      .padStart(2, "0");
+    const minutes = date
+      .getMinutes()
+      .toString()
+      .padStart(2, "0");
+    return `${hours}:${minutes}`;
+  };
   return (
     <div className="flex justify-center items-center min-h-screen">
       <div className="relative w-80 h-[600px] rounded-[40px] shadow-xl overflow-hidden bg-neutral-900 p-1">
@@ -10,7 +32,7 @@ const PhoneMockup: React.FC<PhoneMockupProps> = ({ children }) => {
 
         {/* Status Bar */}
         <div className="flex justify-between items-center px-6 pt-2 text-white text-sm z-10">
-          <span>9:41</span>
+          <span>{formatTime(currentTime)}</span>
           <div className="flex space-x-1">
             <svg
               xmlns="http://www.w3.org/2000/svg"
