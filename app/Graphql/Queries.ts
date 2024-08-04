@@ -24,6 +24,7 @@ export const GET_USER = gql`
       createdAt
       updatedAt
       isPremium
+      themeId
       links {
         id
         url
@@ -79,6 +80,7 @@ export const DELETE_USER = gql`
       createdAt
       updatedAt
       isPremium
+      themeId
     }
   }
 `;
@@ -93,6 +95,7 @@ export const GET_USER_BY_USERNAME = gql`
       createdAt
       updatedAt
       isPremium
+      themeId
       links {
         id
         url

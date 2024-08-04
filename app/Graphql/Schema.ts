@@ -8,6 +8,7 @@ const Schema = `#graphql
     createdAt: String!
     updatedAt: String!
     isPremium: Boolean!
+    themeId: ID
     links: [Link!]!
     image: Image
   }

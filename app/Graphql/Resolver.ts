@@ -80,6 +80,17 @@ const Resolvers = {
             password: hashedPassword,
           },
         });
+        const theme = await prisma.theme.findFirst({
+          where: { id: "66af8b4afd08df5a226aa92c" },
+        });
+        if (theme) {
+          await prisma.user.update({
+            where: { id: user.id },
+            data: {
+              themeId: theme.id,
+            },
+          });
+        }
         return user;
       } catch (error) {
         if (error instanceof UserInputError) {
