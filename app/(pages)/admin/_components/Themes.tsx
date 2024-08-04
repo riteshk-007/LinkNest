@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { Lock, Sparkles } from "lucide-react";
+import { PaintBucket, Sparkles } from "lucide-react";
 import { Theme, ThemeCardProps } from "@/types/types";
 
 const themes: Theme[] = [
@@ -95,8 +95,8 @@ const Themes: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 bg-gray-100 min-h-screen">
-      <h1 className="text-4xl font-bold mb-8 text-center text-gray-800">
+    <div className="container mx-auto px-4 py-8 bg-gradient-to-tl from-gray-900 to-black text-white min-h-screen">
+      <h1 className="text-4xl font-bold mb-8 from-purple-600 via-pink-600 to-blue-600 bg-gradient-to-r bg-clip-text text-transparent inline-block">
         Select Your Theme
       </h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8">
@@ -148,7 +148,7 @@ const ThemeCard: React.FC<ThemeCardProps> = ({
           {isPremium ? (
             <Sparkles className="mx-auto text-yellow-300" size={28} />
           ) : (
-            <Lock className="mx-auto text-white" size={24} />
+            <PaintBucket className="mx-auto text-white" size={24} />
           )}
         </div>
       </div>

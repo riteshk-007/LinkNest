@@ -147,3 +147,28 @@ export const UPDATE_IMAGE = gql`
     }
   }
 `;
+
+export const CREATE_THEME = gql`
+  mutation Mutation(
+    $isPremium: Boolean!
+    $gradientFrom: String!
+    $gradientTo: String!
+    $angle: Int!
+    $image: String
+  ) {
+    createTheme(
+      isPremium: $isPremium
+      gradientFrom: $gradientFrom
+      gradientTo: $gradientTo
+      angle: $angle
+      image: $image
+    ) {
+      id
+      image
+      isPremium
+      gradientFrom
+      gradientTo
+      angle
+    }
+  }
+`;

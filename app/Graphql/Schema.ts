@@ -28,6 +28,15 @@ type Image {
   userId: String!
 }
 
+type Theme {
+  id: ID!
+  image: String
+  isPremium: Boolean!
+  gradientFrom: String!
+  gradientTo: String!
+  angle: Int!
+}
+
   type Query {
     users: [User!]!
     user(id: ID!): User
@@ -41,6 +50,7 @@ type Image {
     deleteUser(id: ID!): User!
     updateUser(id: ID!,email: String,username: String,password: String,desc: String,isPremium: Boolean): User!
     updateImage(userId: ID!, url: String!, key: String!): Image!
+    createTheme(image: String, isPremium: Boolean!, gradientFrom: String!, gradientTo: String!, angle: Int!): Theme!
   }
 `;
 

@@ -244,6 +244,32 @@ const Resolvers = {
         throw new Error("Failed to update image");
       }
     },
+    createTheme: async (
+      _: any,
+      args: {
+        image: string;
+        isPremium: boolean;
+        gradientFrom: string;
+        gradientTo: string;
+        angle: number;
+      }
+    ) => {
+      try {
+        const { image, isPremium, gradientFrom, gradientTo, angle } = args;
+        const theme = await prisma.theme.create({
+          data: {
+            image,
+            isPremium,
+            gradientFrom,
+            gradientTo,
+            angle,
+          },
+        });
+        return theme;
+      } catch (error) {
+        throw new UserInputError("Failed to create theme");
+      }
+    },
   },
 };
 
