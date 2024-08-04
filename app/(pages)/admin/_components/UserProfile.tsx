@@ -11,6 +11,7 @@ import { CustomSession, User, UserProfileProps, Link } from "@/types/types";
 import { LinkIcon } from "lucide-react";
 import Error from "./Error";
 import { Share } from "../../_components/Share";
+import { motion } from "framer-motion";
 
 const UserProfile: React.FC<UserProfileProps> = ({
   backgroundColor,
@@ -71,7 +72,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
       </div>
     );
 
-  const imageSrc = user?.image.url;
+  const imageSrc = user?.image?.url;
   const imageAlt = user.username;
 
   return (
@@ -156,11 +157,19 @@ const UserProfile: React.FC<UserProfileProps> = ({
 export default UserProfile;
 
 const renderImage = (src: string, alt: string): JSX.Element => (
-  <Image
-    src={src}
-    alt={alt}
-    width={130}
-    height={130}
-    className="w-32 h-32 rounded-full object-cover border-4 border-blue-500 shadow-lg"
-  />
+  <motion.div
+    whileHover={{ scale: 1.1, borderRadius: "15%" }}
+    whileFocus={{ scale: 1.4, borderRadius: "15%" }}
+    transition={{ duration: 0.3, ease: "easeInOut" }}
+    className="w-32 h-32 rounded-full border-4 border-blue-500 shadow-lg overflow-hidden"
+    tabIndex={0}
+  >
+    <Image
+      src={src}
+      alt={alt}
+      width={130}
+      height={130}
+      className="object-cover w-full h-full"
+    />
+  </motion.div>
 );
