@@ -4,12 +4,12 @@ const Schema = `#graphql
     email: String!
     username: String!
     password: String!
-    desc: String!
-    image: String
+    desc: String
     createdAt: String!
     updatedAt: String!
     isPremium: Boolean!
     links: [Link!]!
+    image: Image
   }
   type Link {
   id: ID!
@@ -39,7 +39,7 @@ type Image {
     createLink(url: String!, title: String!, image: String, userId: ID!): Link!
     deleteLink(id: ID!): Link!
     deleteUser(id: ID!): User!
-    updateUser(id: ID!,email: String,username: String,password: String,desc: String,image: String,isPremium: Boolean): User!
+    updateUser(id: ID!,email: String,username: String,password: String,desc: String,isPremium: Boolean): User!
     updateImage(userId: ID!, url: String!, key: String!): Image!
   }
 `;

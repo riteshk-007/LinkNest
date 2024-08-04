@@ -1,5 +1,5 @@
 import { LucideIcon } from "lucide-react";
-import { ISODateString, Session } from "next-auth";
+import { Session } from "next-auth";
 import { JWT } from "next-auth/jwt";
 
 export interface StarProps {
@@ -16,7 +16,6 @@ export interface FormData {
   username: string;
   email: string;
   password: string;
-  desc: string;
 }
 
 export interface LayoutProps {
@@ -91,11 +90,16 @@ export interface Link {
   __typename: string;
 }
 
+export interface image {
+  url: string;
+  key: string;
+}
+
 export interface User {
   id: string;
   username: string;
   desc: string;
-  image: string;
+  image: image;
   links: Link[];
   __typename: string;
 }
@@ -129,7 +133,6 @@ export interface CustomSession extends Session {
   };
 }
 
-// Extend the default JWT type to include user id
 export interface CustomJWT extends JWT {
   userId?: string;
 }

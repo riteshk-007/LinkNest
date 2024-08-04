@@ -71,9 +71,8 @@ const UserProfile: React.FC<UserProfileProps> = ({
       </div>
     );
 
-  const imageSrc = user.image;
+  const imageSrc = user?.image.url;
   const imageAlt = user.username;
-  const imageSize = 128;
 
   return (
     <div className="flex flex-col h-screen" style={backgroundStyle}>
@@ -85,7 +84,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
         {/* User Image */}
         <div className="flex justify-center">
           {imageSrc ? (
-            renderImage(imageSrc, imageAlt, imageSize, imageSize)
+            renderImage(imageSrc, imageAlt)
           ) : (
             <div className="w-32 h-32 bg-black rounded-full flex items-center justify-center">
               <Logo />
@@ -156,17 +155,12 @@ const UserProfile: React.FC<UserProfileProps> = ({
 
 export default UserProfile;
 
-const renderImage = (
-  src: string,
-  alt: string,
-  width: number,
-  height: number
-): JSX.Element => (
+const renderImage = (src: string, alt: string): JSX.Element => (
   <Image
     src={src}
     alt={alt}
-    width={width}
-    height={height}
-    className="rounded-full object-cover"
+    width={130}
+    height={130}
+    className="w-32 h-32 rounded-full object-cover border-4 border-blue-500 shadow-lg"
   />
 );

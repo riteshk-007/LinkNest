@@ -7,7 +7,6 @@ export const CREATE_USER = gql`
       email
       username
       desc
-      image
       createdAt
       updatedAt
       isPremium
@@ -22,7 +21,6 @@ export const GET_USER = gql`
       email
       username
       desc
-      image
       createdAt
       updatedAt
       isPremium
@@ -32,6 +30,10 @@ export const GET_USER = gql`
         title
         image
         userId
+      }
+      image {
+        url
+        key
       }
     }
   }
@@ -74,7 +76,6 @@ export const DELETE_USER = gql`
       username
       password
       desc
-      image
       createdAt
       updatedAt
       isPremium
@@ -89,7 +90,6 @@ export const GET_USER_BY_USERNAME = gql`
       email
       username
       desc
-      image
       createdAt
       updatedAt
       isPremium
@@ -99,6 +99,10 @@ export const GET_USER_BY_USERNAME = gql`
         title
         image
         userId
+      }
+      image {
+        url
+        key
       }
     }
   }
@@ -111,7 +115,6 @@ export const UPDATE_USER = gql`
     $username: String
     $password: String
     $desc: String
-    $image: String
     $isPremium: Boolean
   ) {
     updateUser(
@@ -120,7 +123,6 @@ export const UPDATE_USER = gql`
       username: $username
       password: $password
       desc: $desc
-      image: $image
       isPremium: $isPremium
     ) {
       id
@@ -128,7 +130,6 @@ export const UPDATE_USER = gql`
       username
       password
       desc
-      image
       createdAt
       updatedAt
       isPremium

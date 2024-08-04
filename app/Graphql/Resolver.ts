@@ -9,7 +9,7 @@ const Resolvers = {
       try {
         const user = await prisma.user.findUnique({
           where: { id: args.id },
-          include: { links: true },
+          include: { links: true, image: true },
         });
         return user;
       } catch (error) {
@@ -20,7 +20,7 @@ const Resolvers = {
       try {
         const user = await prisma.user.findUnique({
           where: { username: args.username.toLowerCase() },
-          include: { links: true },
+          include: { links: true, image: true },
         });
         if (!user) {
           throw new UserInputError("User not found");
@@ -121,10 +121,16 @@ const Resolvers = {
       try {
         const user = await prisma.user.findUnique({
           where: { id: args.id },
+          include: { image: true },
         });
 
         if (!user) {
           throw new UserInputError("User not found");
+        }
+
+        if (user.image) {
+          await utapi.deleteFiles([user.image.key]);
+          await prisma.image.delete({ where: { id: user.image.id } });
         }
 
         await prisma.$transaction(async (prisma) => {
@@ -150,11 +156,10 @@ const Resolvers = {
         username?: string;
         password?: string;
         desc?: string;
-        image?: string;
         isPremium?: boolean;
       }
     ) => {
-      const { id, email, username, password, desc, image, isPremium } = args;
+      const { id, email, username, password, desc, isPremium } = args;
 
       // Validate input
       if (!id.trim()) {
@@ -188,7 +193,6 @@ const Resolvers = {
         updateData.password = await bcryptjs.hash(password, 12);
       }
       if (desc) updateData.desc = desc;
-      if (image) updateData.image = image;
       if (isPremium !== undefined) updateData.isPremium = isPremium;
 
       try {

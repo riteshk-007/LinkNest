@@ -52,7 +52,7 @@ const UserSetting: React.FC = () => {
     },
   });
 
-  const [updateImage, { loading: imageLoading }] = useMutation(UPDATE_IMAGE, {
+  const [updateImage] = useMutation(UPDATE_IMAGE, {
     refetchQueries: [
       {
         query: GET_USER,
@@ -84,6 +84,7 @@ const UserSetting: React.FC = () => {
       setUsername(data.user.username || "");
       setDesc(data.user.desc || "");
       setWordCount(countWords(data.user.desc || ""));
+      setImageUrl(data.user.image?.url || "");
     }
   }, [data]);
 
