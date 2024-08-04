@@ -187,7 +187,7 @@ const UserSetting: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-zinc-900 via-neutral-800 to-zinc-900 text-white p-6">
+    <div className="min-h-screen bg-gradient-to-br from-zinc-950  to-zinc-900  text-white p-6">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-4xl font-bold mb-8 text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">
           Account Settings

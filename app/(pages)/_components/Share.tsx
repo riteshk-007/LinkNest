@@ -70,7 +70,7 @@ export function Share() {
             <Share2 className="h-4 w-4" />
           </span>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-md bg-neutral-900 border border-neutral-700 text-white rounded-lg shadow-lg">
+        <DialogContent className="sm:max-w-md bg-gradient-to-br from-gray-950 to-black text-white border border-neutral-800  rounded-lg shadow-lg">
           <DialogHeader>
             <DialogTitle className="text-xl font-semibold text-center">
               Share link

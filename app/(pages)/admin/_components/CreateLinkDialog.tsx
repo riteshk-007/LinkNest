@@ -177,18 +177,20 @@ const CreateLinkDialog: React.FC<CreateLinkDialogProps> = ({
       <DialogTrigger asChild>
         <button
           onClick={() => setIsOpen(true)}
-          className="relative inline-flex h-10 md:h-12 overflow-hidden rounded-lg p-0.5 focus:outline-none shadow-lg bg-gradient-to-r from-purple-400 via-pink-500 to-red-500"
+          className="relative inline-flex h-10 md:h-12 overflow-hidden rounded-lg p-0.5 focus:outline-none shadow-lg bg-gradient-to-r from-purple-600 via-pink-700 to-red-600"
         >
-          <span className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 opacity-75 blur-sm" />
-          <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-md bg-gray-900 px-4 py-2 text-sm font-semibold text-white backdrop-blur-sm">
+          <span className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-700 opacity-75 blur-sm" />
+          <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-md bg-black px-4 py-2 text-sm font-semibold text-white backdrop-blur-sm transition-all hover:bg-opacity-80">
             <IoMdAdd className="h-5 w-5" />
             <span className="ml-2">{buttonText}</span>
           </span>
         </button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[90vw] md:max-w-[600px] bg-[#1c1b1f] rounded-xl shadow-md border-zinc-600">
+      <DialogContent className="sm:max-w-[90vw] md:max-w-[600px] bg-gradient-to-br from-gray-900 to-black rounded-xl shadow-md border border-gray-800">
         <DialogHeader>
-          <DialogTitle className="text-white">Create New Link</DialogTitle>
+          <DialogTitle className="text-white text-xl font-bold">
+            Create New Link
+          </DialogTitle>
           <DialogDescription className="text-gray-400">
             Add a new link to your profile.
           </DialogDescription>
@@ -196,22 +198,22 @@ const CreateLinkDialog: React.FC<CreateLinkDialogProps> = ({
         <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4 py-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label htmlFor="title" className="text-white">
+              <label htmlFor="title" className="text-white mb-1 block">
                 Title
               </label>
               <Input
                 placeholder="Title"
                 {...register("title", { required: "Title is required" })}
-                className="bg-[#2c2b2f] text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-600"
+                className="bg-gradient-to-r from-gray-800 to-gray-900 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-600 transition-all"
               />
               {errors.title && (
-                <span className="text-red-500 text-sm">
+                <span className="text-red-500 text-sm mt-1">
                   {errors.title.message}
                 </span>
               )}
             </div>
             <div>
-              <label htmlFor="url" className="text-white">
+              <label htmlFor="url" className="text-white mb-1 block">
                 URL
               </label>
               <Input
@@ -223,10 +225,10 @@ const CreateLinkDialog: React.FC<CreateLinkDialogProps> = ({
                     message: "Invalid URL format",
                   },
                 })}
-                className="bg-[#2c2b2f] text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-600"
+                className="bg-gradient-to-r from-gray-800 to-gray-900 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-600 transition-all"
               />
               {errors.url && (
-                <span className="text-red-500 text-sm">
+                <span className="text-red-500 text-sm mt-1">
                   {errors.url.message}
                 </span>
               )}
@@ -237,7 +239,7 @@ const CreateLinkDialog: React.FC<CreateLinkDialogProps> = ({
               <Button
                 type="button"
                 variant="outline"
-                className="bg-[#2c2b2f] text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-600"
+                className="bg-gradient-to-r from-gray-800 to-gray-900 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-600 transition-all hover:from-gray-700 hover:to-gray-800"
               >
                 {selectedIcon ? (
                   <>
@@ -257,14 +259,16 @@ const CreateLinkDialog: React.FC<CreateLinkDialogProps> = ({
                 )}
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="bg-[#2c2b2f] text-white custom-scrollbar border-gray-700 max-h-60 overflow-y-auto rounded-lg shadow-md">
-              <DropdownMenuLabel>Social Media Icons</DropdownMenuLabel>
-              <DropdownMenuSeparator />
+            <DropdownMenuContent className="bg-gradient-to-br from-gray-900 to-black text-white custom-scrollbar border-gray-700 max-h-60 overflow-y-auto rounded-lg shadow-md">
+              <DropdownMenuLabel className="text-gray-300">
+                Social Media Icons
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator className="bg-gray-700" />
               {socialIcons.map((item) => (
                 <DropdownMenuItem
                   key={item.name}
                   onClick={() => setValue("icon", item)}
-                  className="cursor-pointer hover:bg-[#3c3b3f] flex items-center "
+                  className="cursor-pointer hover:bg-gradient-to-r hover:from-gray-800 hover:to-gray-700 flex items-center transition-all"
                 >
                   <Image
                     width={20}
@@ -280,7 +284,7 @@ const CreateLinkDialog: React.FC<CreateLinkDialogProps> = ({
           </DropdownMenu>
           <Button
             type="submit"
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-2 px-4 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
           >
             {isLoading ? "Creating..." : "Create"}
           </Button>
