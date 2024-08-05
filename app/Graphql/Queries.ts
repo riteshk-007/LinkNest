@@ -204,3 +204,19 @@ export const GET_THEMES = gql`
     }
   }
 `;
+
+export const UPDATE_USER_THEME = gql`
+  mutation Mutation($userId: ID!, $themeId: ID!) {
+    updateUserTheme(userId: $userId, themeId: $themeId) {
+      id
+      email
+      username
+      password
+      desc
+      createdAt
+      updatedAt
+      isPremium
+      themeId
+    }
+  }
+`;

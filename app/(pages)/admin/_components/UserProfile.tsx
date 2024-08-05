@@ -41,31 +41,28 @@ const UserProfile: React.FC<UserProfileProps> = ({
       ? (data as { user: User })?.user
       : (data as { userByUsername: User })?.userByUsername;
 
-  //  backgroundStyle
   const theme = user?.theme;
 
-  const backgroundStyle: React.CSSProperties =
-    theme &&
-    theme.image &&
-    theme.gradientFrom &&
-    theme.gradientTo &&
-    theme.angle
+  const backgroundStyle: React.CSSProperties = theme
+    ? theme.image && theme.gradientFrom && theme.gradientTo && theme.angle
       ? {
           backgroundImage: `linear-gradient(${theme.angle}deg, ${theme.gradientFrom}, ${theme.gradientTo}), url(${theme.image})`,
           backgroundSize: "cover, cover",
           backgroundPosition: "center, center",
+          backgroundBlendMode: "overlay",
         }
-      : theme && theme.image
+      : theme.image
       ? {
           backgroundImage: `url(${theme.image})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }
-      : theme && theme.gradientFrom && theme.gradientTo && theme.angle
+      : theme.gradientFrom && theme.gradientTo && theme.angle
       ? {
           backgroundImage: `linear-gradient(${theme.angle}deg, ${theme.gradientFrom}, ${theme.gradientTo})`,
         }
-      : { backgroundColor: "black" };
+      : { backgroundColor: "black" }
+    : { backgroundColor: "black" };
 
   if (loading)
     return (
@@ -121,7 +118,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
       </div>
 
       {/* Link List */}
-      <div className="flex items-center flex-col justify-start pb-16 pt-4 overflow-y-auto custom-scrollbar px-4">
+      <div className="flex items-center flex-col justify-start pb-16 pt-4 overflow-y-auto custom-scrollbar px-4 ">
         {user.links && user.links.length > 0 ? (
           user.links.map((link: Link) => (
             <a
@@ -129,7 +126,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
               href={link.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex w-full max-w-md items-center bg-white bg-opacity-20 rounded-lg p-3 mb-3 hover:bg-opacity-30 transition-all"
+              className="flex w-full max-w-md items-center bg-foreground bg-opacity-20 rounded-lg p-3 mb-3 hover:bg-opacity-30 transition-all"
             >
               {link.image ? (
                 <Image
@@ -146,7 +143,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
                   className="bg-gradient-to-br from-blue-500 to-purple-600 w-8 h-8 rounded-full p-1"
                 />
               )}
-              <span className="text-white font-medium ml-3">{link.title}</span>
+              <span className="text-muted font-medium ml-3">{link.title}</span>
             </a>
           ))
         ) : (

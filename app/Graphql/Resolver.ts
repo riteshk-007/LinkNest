@@ -292,6 +292,53 @@ const Resolvers = {
         throw new UserInputError("Failed to create theme");
       }
     },
+    updateUserTheme: async (
+      _: any,
+      args: { userId: string; themeId: string }
+    ) => {
+      const { userId, themeId } = args;
+
+      try {
+        // Fetch the user and the theme based on the provided IDs
+        const [user, theme] = await Promise.all([
+          prisma.user.findUnique({
+            where: { id: userId },
+            select: { isPremium: true },
+          }),
+          prisma.theme.findUnique({
+            where: { id: themeId },
+            select: { isPremium: true },
+          }),
+        ]);
+
+        if (!user || !theme) {
+          throw new UserInputError("User or theme not found.");
+        }
+
+        // Check if a free user is trying to select a premium theme
+        if (!user.isPremium && theme.isPremium) {
+          throw new UserInputError("Free users cannot select premium themes.");
+        }
+
+        // Update the user's theme
+        await prisma.user.update({
+          where: { id: userId },
+          data: { themeId },
+        });
+
+        // Fetch the updated user object
+        const updatedUser = await prisma.user.findUnique({
+          where: { id: userId },
+        });
+
+        return updatedUser;
+      } catch (error) {
+        if (error instanceof UserInputError) {
+          throw error;
+        }
+        throw new Error("Failed to update user theme");
+      }
+    },
   },
 };
 

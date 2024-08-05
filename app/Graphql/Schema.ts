@@ -54,6 +54,7 @@ type Theme {
     updateUser(id: ID!,email: String,username: String,password: String,desc: String,isPremium: Boolean): User!
     updateImage(userId: ID!, url: String!, key: String!): Image!
     createTheme(image: String, isPremium: Boolean!, gradientFrom: String!, gradientTo: String!, angle: Int!): Theme!
+    updateUserTheme(userId: ID!, themeId: ID!): User!
   }
 `;
 
