@@ -134,7 +134,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
                   alt={link.title}
                   width={30}
                   height={30}
-                  className="rounded-lg"
+                  className="rounded-lg bg-gray-200 p-[2px]"
                 />
               ) : (
                 <LinkIcon
