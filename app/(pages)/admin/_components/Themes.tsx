@@ -1,18 +1,44 @@
 "use client";
 import React, { useState } from "react";
 import { PaintBucket, Sparkles } from "lucide-react";
-import { Theme, ThemeCardProps } from "@/types/types";
-import { useQuery } from "@apollo/client";
-import { GET_THEMES } from "@/app/Graphql/Queries";
+import { CustomSession, Theme, ThemeCardProps } from "@/types/types";
+import { useMutation, useQuery } from "@apollo/client";
+import { GET_THEMES, GET_USER, UPDATE_USER_THEME } from "@/app/Graphql/Queries";
+import { toast } from "sonner";
+import { useSession } from "next-auth/react";
 
 const Themes: React.FC = () => {
   const [selectedTheme, setSelectedTheme] = useState<Theme | null>(null);
 
   const { data, loading, error } = useQuery<{ themes: Theme[] }>(GET_THEMES);
+  const { data: session } = useSession();
+  const sessionData = session as CustomSession | null;
+
+  const [updateUserTheme] = useMutation(UPDATE_USER_THEME, {
+    onError: (error) => {
+      const errorMessage =
+        error.graphQLErrors?.[0]?.message ||
+        "An error occurred. Please try again.";
+      toast.error(errorMessage);
+    },
+    onCompleted: () => {
+      toast.success("Theme updated successfully");
+    },
+    refetchQueries: [
+      {
+        query: GET_USER,
+        variables: {
+          userId: sessionData?.user?.id ? sessionData?.user?.id : "",
+        },
+      },
+    ],
+  });
 
   const handleThemeSelect = (theme: Theme) => {
     setSelectedTheme(theme);
-    console.log("Selected Theme:", theme);
+    updateUserTheme({
+      variables: { userId: sessionData?.user?.id, themeId: theme.id },
+    });
   };
 
   const themes = data?.themes || [];
