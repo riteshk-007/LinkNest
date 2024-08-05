@@ -26,13 +26,23 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { LayoutProps, NavLinkProps } from "@/types/types";
+import { CustomSession, LayoutProps, NavLinkProps } from "@/types/types";
 import Logo from "../_components/Logo";
 import { motion } from "framer-motion";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { Share } from "../_components/Share";
+import { useQuery } from "@apollo/client";
+import { GET_USER } from "@/app/Graphql/Queries";
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
+  const { data: session } = useSession();
+  const sessionData = session as CustomSession | null;
+
+  const { data } = useQuery(GET_USER, {
+    variables: { userId: sessionData?.user?.id ? sessionData.user.id : "" },
+  });
+
+  const isPremium = data?.user?.isPremium || false;
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr] bg-black">
       <div className="hidden border-r border-gray-800 md:block">
@@ -59,7 +69,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               />
             </nav>
           </div>
-          <UpgradeCard />
+          {!isPremium && <UpgradeCard />}
         </div>
       </div>
       <div className="flex flex-col">
@@ -97,7 +107,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   label="Settings"
                 />
               </nav>
-              <UpgradeCard />
+              {!isPremium && <UpgradeCard />}
             </SheetContent>
           </Sheet>
           <div className="w-full flex-1">

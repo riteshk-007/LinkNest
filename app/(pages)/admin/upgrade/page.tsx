@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import React from "react";
-import PriceCard from "../_components/PriceCard";
+import PriceCards from "../_components/PriceCard";
 
 export const metadata: Metadata = {
   title: "Upgrade Plan - Link Nest: All Your Social Links in One Place",
@@ -10,26 +10,22 @@ export const metadata: Metadata = {
 
 const Upgrade: React.FC = () => {
   return (
-    <div
-      className="w-full text-white flex flex-col items-center justify-start py-16 px-4 sm:px-6 lg:px-8"
-      style={{
-        background: "radial-gradient(circle, #111 80%, black 100%)",
-      }}
-    >
-      <div className="w-full max-w-4xl mx-auto text-center mb-16">
-        <h3 className="text-lg sm:text-xl font-semibold text-sky-400 mb-4">
-          Link Nest: All Your Social Links in One Place
-        </h3>
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6">
-          Designed for Visionary Brands And Creators Like You
-        </h1>
-        <p className="text-sm sm:text-base text-gray-300 max-w-2xl mx-auto">
-          At Link Nest, we focus on enhancing your brand&apos;s online presence
-          with innovative features for seamless social media management.
-        </p>
-      </div>
-      <div className="w-full max-w-5xl mx-auto">
-        <PriceCard />
+    <div className="min-h-screen w-full text-white  bg-gradient-to-b from-gray-900 to-black">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <div className="text-center mb-16">
+          <h3 className="text-lg sm:text-xl font-semibold text-blue-400 mb-4 animate-pulse">
+            Link Nest: All Your Social Links in One Place
+          </h3>
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 animate-text">
+            Elevate Your Online Presence
+          </h1>
+          <p className="text-lg sm:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+            Link Nest empowers visionary brands and creators like you with
+            innovative features for seamless social media management. Choose the
+            plan that fits your ambition.
+          </p>
+        </div>
+        <PriceCards />
       </div>
     </div>
   );

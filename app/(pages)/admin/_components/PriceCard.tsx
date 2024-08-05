@@ -1,95 +1,122 @@
 "use client";
-import React, { useState } from "react";
-import { IoMdArrowDropright } from "react-icons/io";
+import React from "react";
+import { CheckCircle2, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { PricePlan } from "@/types/types";
-import { Switch } from "@/components/ui/switch";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import Link from "next/link";
 
-const PriceCard: React.FC = () => {
-  const [isYearly, setIsYearly] = useState(false);
-
-  const plans: PricePlan[] = [
+const PriceCards = () => {
+  const plans = [
     {
       title: "Free Plan",
-      monthlyPrice: "Free",
-      yearlyPrice: "Free",
+      price: "Free",
       features: [
-        { text: "Access to all social links in one place" },
-        { text: "Basic analytics and insights" },
-        { text: "Responsive design for mobile devices" },
+        "Access to all social links in one place",
+        "Basic analytics and insights",
+        "Responsive design for mobile devices",
+        "Up to 5 custom link pages",
       ],
-      buttonText: "Get Started for Free",
+      buttonText: "Get Started",
+      popular: false,
+      link: "/admin",
     },
     {
       title: "Premium Plan",
-      monthlyPrice: "₹149",
-      yearlyPrice: "₹1,499",
+      price: "₹1,999",
       features: [
-        { text: "Customizable design themes" },
-        { text: "Advanced analytics and insights" },
-        { text: "Priority support" },
-        { text: "Early access to new features" },
+        "All features from Free Plan",
+        "Unlimited custom link pages",
+        "Advanced analytics and insights",
+        "Priority support",
+        "Custom domain support",
+        "Ad-free experience",
       ],
       buttonText: "Upgrade Now",
+      popular: true,
+      link: "/admin",
     },
   ];
 
   return (
-    <section className="py-16 px-4 z-0">
+    <section className="py-20 px-4  text-gray-100">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-4xl sm:text-5xl font-extrabold text-white mb-4 animate-fade-in-up">
+          <h2 className="text-5xl sm:text-6xl font-extrabold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 animate-text">
             Choose Your Plan
           </h2>
-          <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto animate-fade-in-up">
-            Join Link Nest today and streamline your online presence with our
-            exclusive plans.
+          <p className="text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
+            Elevate your online presence with Link Nest&apos;s tailored plans.
           </p>
-          <div className="flex items-center justify-center space-x-4">
-            <span className="text-lg font-medium text-gray-300">Monthly</span>
-            <Switch
-              checked={isYearly}
-              onCheckedChange={() => setIsYearly(!isYearly)}
-              className="data-[state=checked]:bg-sky-500 bg-neutral-800"
-            />
-            <span className="text-lg font-medium text-gray-300">Yearly</span>
-          </div>
         </div>
-        <div className="grid gap-8 lg:grid-cols-2 animate-fade-in-up">
+        <div className="grid gap-10 md:grid-cols-2">
           {plans.map((plan, index) => (
-            <div
+            <Card
               key={index}
-              className="bg-gradient-to-br from-sky-900 to-slate-900 rounded-3xl shadow-2xl p-8 transition-all duration-300  hover:shadow-sky-500/20 border border-sky-500/20"
+              className={`b bg-gradient-to-b from-gray-900 to-black border-gray-700 overflow-hidden transform transition-all duration-300  hover:shadow-2xl ${
+                plan.popular
+                  ? "hover:shadow-purple-500/30"
+                  : "hover:shadow-blue-500/30"
+              } relative`}
             >
-              <h3 className="text-3xl font-bold text-white mb-2 text-center">
-                {plan.title}
-              </h3>
-              <p className="text-4xl font-bold text-sky-400 mb-2 text-center">
-                {isYearly ? plan.yearlyPrice : plan.monthlyPrice}
-              </p>
-              <p className="text-lg text-gray-300 mb-6 text-center">
-                {plan.title !== "Free Plan" &&
-                  (isYearly ? "per year" : "per month")}
-              </p>
-              <ul className="space-y-4 mb-8">
-                {plan.features.map((feature, fIndex) => (
-                  <li key={fIndex} className="flex items-start">
-                    <IoMdArrowDropright className="text-sky-400 text-2xl flex-shrink-0 mr-2 mt-1" />
-                    <span className="text-gray-300 text-lg">
-                      {feature.text}
+              {plan.popular && (
+                <div className="absolute top-4 right-4 bg-purple-500 text-white px-3 py-1 rounded-full text-sm font-semibold flex items-center">
+                  <Star className="w-4 h-4 mr-1" /> Popular
+                </div>
+              )}
+              <CardHeader
+                className={`p-6 ${
+                  plan.popular
+                    ? "bg-gradient-to-r from-purple-600 to-pink-600"
+                    : "bg-gradient-to-r from-blue-600 to-cyan-600"
+                }`}
+              >
+                <CardTitle className="text-3xl font-bold text-center text-white">
+                  {plan.title}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-6">
+                <p className="text-5xl font-bold text-center mb-6 text-gray-200">
+                  {plan.price}
+                  {plan.title === "Premium Plan" && (
+                    <span className="text-lg font-normal text-gray-300">
+                      {" "}
+                      one-time
                     </span>
-                  </li>
-                ))}
-              </ul>
-              <div className="text-center">
-                <Button
-                  variant="outline"
-                  className="bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 px-6 rounded-full text-lg transition-all duration-300 hover:shadow-lg hover:shadow-sky-500/50"
-                >
-                  {plan.buttonText}
-                </Button>
-              </div>
-            </div>
+                  )}
+                </p>
+                <ul className="space-y-4">
+                  {plan.features.map((feature, fIndex) => (
+                    <li key={fIndex} className="flex items-center space-x-3">
+                      <CheckCircle2
+                        className={`h-5 w-5 ${
+                          plan.popular ? "text-purple-400" : "text-blue-400"
+                        } flex-shrink-0`}
+                      />
+                      <span className="text-gray-300">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+              <CardFooter className=" p-6">
+                <Link href={plan.link} className="w-full">
+                  <Button
+                    className={`w-full ${
+                      plan.popular
+                        ? "bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+                        : "bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600"
+                    } text-white font-bold py-4 px-6 rounded-full text-lg transition-all duration-300 shadow-lg hover:shadow-xl`}
+                  >
+                    {plan.buttonText}
+                  </Button>
+                </Link>
+              </CardFooter>
+            </Card>
           ))}
         </div>
       </div>
@@ -97,4 +124,4 @@ const PriceCard: React.FC = () => {
   );
 };
 
-export default PriceCard;
+export default PriceCards;
