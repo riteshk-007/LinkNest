@@ -143,7 +143,7 @@ const Resolvers = {
       try {
         const user = await prisma.user.findUnique({
           where: { id: args.id },
-          include: { image: true },
+          include: { links: true, image: true, payments: true },
         });
 
         if (!user) {
@@ -155,14 +155,18 @@ const Resolvers = {
           await prisma.image.delete({ where: { id: user.image.id } });
         }
 
-        await prisma.$transaction(async (prisma) => {
+        if (user.links.length > 0) {
           await prisma.link.deleteMany({
-            where: { userId: args.id },
+            where: { userId: user.id },
           });
-
-          await prisma.user.delete({
-            where: { id: args.id },
+        }
+        if (user.payments.length > 0) {
+          await prisma.payment.deleteMany({
+            where: { userId: user.id },
           });
+        }
+        await prisma.user.delete({
+          where: { id: args.id },
         });
 
         return user;
