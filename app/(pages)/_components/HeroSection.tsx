@@ -13,9 +13,9 @@ const Star: React.FC<StarProps> = ({ top, left, size }) => (
       width: `${size}px`,
       height: `${size}px`,
       opacity: Math.random() * 0.7 + 0.3,
-      animation: `twinkle ${Math.random() * 4 + 2}s infinite alternate, float ${
-        Math.random() * 10 + 5
-      }s infinite alternate`,
+      animation: `twinkle ${Math.random() * 4 +
+        2}s infinite alternate, float ${Math.random() * 10 +
+        5}s infinite alternate`,
     }}
   />
 );
@@ -36,7 +36,7 @@ const Stars: React.FC<StarsProps> = ({ count }) => (
 const HeroSection: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-black to-neutral-900 text-center p-6 relative overflow-hidden">
-      <Stars count={300} />
+      <Stars count={450} />
       <div className="mb-4 relative z-10">
         <button className="bg-neutral-800 text-gray-300 py-2 px-6 rounded-full flex items-center justify-center space-x-2 shadow-md text-xs border-2 border-neutral-600">
           <Sparkles size={18} color="gold" />

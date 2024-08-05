@@ -220,3 +220,14 @@ export const UPDATE_USER_THEME = gql`
     }
   }
 `;
+
+export const CREATE_PAYMENT = gql`
+  mutation Mutation($amount: Int!, $userId: ID!) {
+    createPayment(amount: $amount, userId: $userId) {
+      id
+      amount
+      paymentDate
+      userId
+    }
+  }
+`;

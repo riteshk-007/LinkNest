@@ -339,6 +339,20 @@ const Resolvers = {
         throw new Error("Failed to update user theme");
       }
     },
+    createPayment: async (_: any, args: { amount: number; userId: string }) => {
+      try {
+        const { amount, userId } = args;
+        const payment = await prisma.payment.create({
+          data: {
+            amount,
+            userId,
+          },
+        });
+        return payment;
+      } catch (error) {
+        throw new UserInputError("Failed to create payment");
+      }
+    },
   },
 };
 

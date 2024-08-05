@@ -3,10 +3,15 @@ import React, { useEffect, useState } from "react";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { FormInput } from "@/types/types";
+import { CustomSession, FormInput } from "@/types/types";
 import { toast } from "sonner";
+import { useMutation } from "@apollo/client";
+import { CREATE_PAYMENT, GET_USER, UPDATE_USER } from "@/app/Graphql/Queries";
+import { useSession } from "next-auth/react";
 
 const CheckoutForm: React.FC = () => {
+  const { data: session } = useSession();
+  const sessionData = session as CustomSession | null;
   const [scriptLoaded, setScriptLoaded] = useState<boolean>(false);
   const router = useRouter();
   const {
@@ -30,7 +35,28 @@ const CheckoutForm: React.FC = () => {
       document.body.removeChild(script);
     };
   }, []);
-
+  const [createPayment] = useMutation(CREATE_PAYMENT, {
+    onCompleted: (data) => {
+      console.log(data);
+    },
+    onError: (error) => {
+      console.error(error);
+    },
+  });
+  const [UpdateUser] = useMutation(UPDATE_USER, {
+    refetchQueries: [
+      {
+        query: GET_USER,
+        variables: { userId: sessionData?.user?.id ? sessionData.user.id : "" },
+      },
+    ],
+    onCompleted: (data) => {
+      console.log(data);
+    },
+    onError: (error) => {
+      console.error(error);
+    },
+  });
   const onSubmit: SubmitHandler<FormInput> = (data) => {
     if (scriptLoaded) {
       const options = {
@@ -51,7 +77,21 @@ const CheckoutForm: React.FC = () => {
           "card[cvv]": data.cvv,
         },
         handler: function(response: any) {
+          createPayment({
+            variables: {
+              amount: 1999,
+              userId: sessionData?.user?.id,
+            },
+          });
+          UpdateUser({
+            variables: {
+              updateUserId: sessionData?.user?.id,
+              isPremium: true,
+            },
+          });
+
           toast.success("Payment successful!");
+          router.push("/admin");
         },
         modal: {
           ondismiss: function() {

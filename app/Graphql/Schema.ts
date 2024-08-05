@@ -12,6 +12,7 @@ const Schema = `#graphql
     links: [Link!]!
     image: Image
     theme: Theme
+    payments: [Payment!]!
   }
   type Link {
   id: ID!
@@ -39,6 +40,15 @@ type Theme {
   angle: Int!
 }
 
+
+type Payment {
+    id: ID!
+    amount: Int!
+    paymentDate: String!
+    userId: ID!
+    user: User!
+  }
+
   type Query {
     users: [User!]!
     user(id: ID!): User
@@ -55,6 +65,7 @@ type Theme {
     updateImage(userId: ID!, url: String!, key: String!): Image!
     createTheme(image: String, isPremium: Boolean!, gradientFrom: String!, gradientTo: String!, angle: Int!): Theme!
     updateUserTheme(userId: ID!, themeId: ID!): User!
+    createPayment(amount: Int!, userId: ID!): Payment!
   }
 `;
 
