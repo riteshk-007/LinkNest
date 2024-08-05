@@ -14,18 +14,8 @@ import { Share } from "../../_components/Share";
 import { motion } from "framer-motion";
 
 const UserProfile: React.FC<UserProfileProps> = ({
-  backgroundColor,
-  gradientFrom,
-  gradientTo,
   username: propUsername,
 }) => {
-  const backgroundStyle: React.CSSProperties =
-    gradientFrom && gradientTo
-      ? {
-          backgroundImage: `linear-gradient(to bottom, ${gradientFrom}, ${gradientTo})`,
-        }
-      : { backgroundColor: backgroundColor || "black" };
-
   const { data: session } = useSession();
   const sessionData = session as CustomSession | null;
 
@@ -50,6 +40,32 @@ const UserProfile: React.FC<UserProfileProps> = ({
     sessionData && sessionData.user?.username === username
       ? (data as { user: User })?.user
       : (data as { userByUsername: User })?.userByUsername;
+
+  //  backgroundStyle
+  const theme = user?.theme;
+
+  const backgroundStyle: React.CSSProperties =
+    theme &&
+    theme.image &&
+    theme.gradientFrom &&
+    theme.gradientTo &&
+    theme.angle
+      ? {
+          backgroundImage: `linear-gradient(${theme.angle}deg, ${theme.gradientFrom}, ${theme.gradientTo}), url(${theme.image})`,
+          backgroundSize: "cover, cover",
+          backgroundPosition: "center, center",
+        }
+      : theme && theme.image
+      ? {
+          backgroundImage: `url(${theme.image})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }
+      : theme && theme.gradientFrom && theme.gradientTo && theme.angle
+      ? {
+          backgroundImage: `linear-gradient(${theme.angle}deg, ${theme.gradientFrom}, ${theme.gradientTo})`,
+        }
+      : { backgroundColor: "black" };
 
   if (loading)
     return (

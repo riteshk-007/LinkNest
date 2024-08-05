@@ -101,6 +101,7 @@ export interface User {
   desc: string;
   image: image;
   links: Link[];
+  theme: Theme;
   __typename: string;
 }
 

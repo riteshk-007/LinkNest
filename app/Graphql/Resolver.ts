@@ -9,7 +9,7 @@ const Resolvers = {
       try {
         const user = await prisma.user.findUnique({
           where: { id: args.id },
-          include: { links: true, image: true },
+          include: { links: true, image: true, theme: true },
         });
         return user;
       } catch (error) {
@@ -20,7 +20,7 @@ const Resolvers = {
       try {
         const user = await prisma.user.findUnique({
           where: { username: args.username.toLowerCase() },
-          include: { links: true, image: true },
+          include: { links: true, image: true, theme: true },
         });
         if (!user) {
           throw new UserInputError("User not found");

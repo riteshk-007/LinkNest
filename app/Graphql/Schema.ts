@@ -11,6 +11,7 @@ const Schema = `#graphql
     themeId: ID
     links: [Link!]!
     image: Image
+    theme: Theme
   }
   type Link {
   id: ID!

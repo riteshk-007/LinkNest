@@ -5,7 +5,7 @@ import UserProfile from "./UserProfile";
 const Preview = () => {
   return (
     <PhoneMockup>
-      <UserProfile gradientFrom="#4a90e2" gradientTo="#81c784" />
+      <UserProfile />
     </PhoneMockup>
   );
 };

@@ -15,7 +15,7 @@ export const CREATE_USER = gql`
 `;
 
 export const GET_USER = gql`
-  query User($userId: ID!) {
+  query Query($userId: ID!) {
     user(id: $userId) {
       id
       email
@@ -35,6 +35,14 @@ export const GET_USER = gql`
       image {
         url
         key
+      }
+      theme {
+        id
+        image
+        isPremium
+        gradientFrom
+        gradientTo
+        angle
       }
     }
   }
@@ -106,6 +114,14 @@ export const GET_USER_BY_USERNAME = gql`
       image {
         url
         key
+      }
+      theme {
+        id
+        image
+        isPremium
+        gradientFrom
+        gradientTo
+        angle
       }
     }
   }
