@@ -357,6 +357,40 @@ const Resolvers = {
         throw new UserInputError("Failed to create payment");
       }
     },
+    updateLink: async (
+      _: any,
+      args: { id: string; url?: string; title?: string; image?: string }
+    ) => {
+      try {
+        const { id, url, title, image } = args;
+
+        // Check if the link exists
+        const existingLink = await prisma.link.findUnique({
+          where: { id },
+        });
+
+        if (!existingLink) {
+          throw new UserInputError("Link not found");
+        }
+
+        // Prepare update data
+        const updateData: any = {};
+
+        if (url) updateData.url = url;
+        if (title) updateData.title = title;
+        if (image) updateData.image = image;
+
+        // Update the link
+        const updatedLink = await prisma.link.update({
+          where: { id },
+          data: updateData,
+        });
+
+        return updatedLink;
+      } catch (error) {
+        throw new UserInputError("Failed to update link");
+      }
+    },
   },
 };
 

@@ -66,6 +66,7 @@ type Payment {
     createTheme(image: String, isPremium: Boolean!, gradientFrom: String!, gradientTo: String!, angle: Int!): Theme!
     updateUserTheme(userId: ID!, themeId: ID!): User!
     createPayment(amount: Int!, userId: ID!): Payment!
+    updateLink(id: ID!, url: String, title: String, image: String): Link!
   }
 `;
 
