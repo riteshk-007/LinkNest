@@ -138,3 +138,12 @@ export interface CustomSession extends Session {
 export interface CustomJWT extends JWT {
   userId?: string;
 }
+
+export type FormInput = {
+  name: string;
+  email: string;
+  cardNumber: string;
+  expiryDate: string;
+  cvv: string;
+  phone: string;
+};
