@@ -39,7 +39,7 @@ const PriceCards = () => {
       ],
       buttonText: "Upgrade Now",
       popular: true,
-      link: "/admin",
+      link: "/admin/upgrade/checkout",
     },
   ];
 
@@ -54,11 +54,11 @@ const PriceCards = () => {
             Elevate your online presence with Link Nest&apos;s tailored plans.
           </p>
         </div>
-        <div className="grid gap-10 md:grid-cols-2">
+        <div className="grid gap-10 lg:grid-cols-2">
           {plans.map((plan, index) => (
             <Card
               key={index}
-              className={`b bg-gradient-to-b from-gray-900 to-black border-gray-700 overflow-hidden transform transition-all duration-300  hover:shadow-2xl ${
+              className={`bg-gradient-to-b from-gray-900 to-black border-gray-700 overflow-hidden transform transition-all duration-300  hover:shadow-2xl ${
                 plan.popular
                   ? "hover:shadow-purple-500/30"
                   : "hover:shadow-blue-500/30"
