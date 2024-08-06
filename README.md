@@ -8,8 +8,11 @@
 
 LinkNest is a powerful and modern web application built with Next.js, designed to efficiently manage and organize your links. This project leverages cutting-edge technologies such as Prisma, Apollo Client, and Tailwind CSS to provide a seamless and robust user experience.
 
-![image](https://github.com/user-attachments/assets/cdc84906-62fa-4557-96f6-9030a5c5d0cb)
-![image](https://github.com/user-attachments/assets/19de605f-5b46-420e-a52c-3554f0006760)
+
+
+https://github.com/user-attachments/assets/6de4c0f2-50a7-43fe-8bd5-514082e1d0ff
+
+
 
 ## Live Demo
 
@@ -67,6 +70,12 @@ Check out the live application: [LinkNest Live](https://link-nest.vercel.app)
     ```bash
     npm install
     ```
+
+    
+![image](https://github.com/user-attachments/assets/cdc84906-62fa-4557-96f6-9030a5c5d0cb)
+![image](https://github.com/user-attachments/assets/19de605f-5b46-420e-a52c-3554f0006760)
+
+
 
 3. Set up your environment variables. Create a `.env.local` file in the root directory and add the following variables:
     ```env
