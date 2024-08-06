@@ -148,7 +148,9 @@ const UserProfile: React.FC<UserProfileProps> = ({
                   className="bg-gradient-to-br from-blue-500 to-purple-600 w-8 h-8 rounded-full p-1"
                 />
               )}
-              <span className="text-muted font-medium ml-3">{link.title}</span>
+              <span className="text-muted font-medium ml-3 capitalize">
+                {link.title}
+              </span>
             </a>
           ))
         ) : (
