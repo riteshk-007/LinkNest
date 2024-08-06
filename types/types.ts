@@ -41,11 +41,17 @@ export interface PricePlan {
 }
 
 export interface LinkCardProps {
+  id: string;
   title: string;
   url: string;
   image?: string;
-  onDelete: () => void;
-  onEdit: () => void;
+  onDelete: (id: string) => void;
+  onEdit: (id: string, field: string, value: string) => void;
+}
+
+export interface EditData {
+  field: "title" | "url" | "image";
+  value: string;
 }
 
 export interface FormInputs {

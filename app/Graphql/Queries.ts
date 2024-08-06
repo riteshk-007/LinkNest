@@ -231,3 +231,20 @@ export const CREATE_PAYMENT = gql`
     }
   }
 `;
+
+export const UPDATE_LINK = gql`
+  mutation Mutation(
+    $updateLinkId: ID!
+    $url: String
+    $title: String
+    $image: String
+  ) {
+    updateLink(id: $updateLinkId, url: $url, title: $title, image: $image) {
+      id
+      url
+      title
+      image
+      userId
+    }
+  }
+`;

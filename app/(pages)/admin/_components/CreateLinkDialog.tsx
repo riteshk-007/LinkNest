@@ -28,7 +28,7 @@ import { useMutation } from "@apollo/client";
 import { CREATE_LINK, GET_USER } from "@/app/Graphql/Queries";
 import { toast } from "sonner";
 
-const socialIcons: SocialIcon[] = [
+export const socialIcons: SocialIcon[] = [
   {
     name: "Facebook",
     imageUrl:

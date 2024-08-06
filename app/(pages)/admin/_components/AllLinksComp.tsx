@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import LinkCard from "./LinkCard";
 import { useMutation, useQuery } from "@apollo/client";
-import { DELETE_LINK, GET_USER } from "@/app/Graphql/Queries";
+import { DELETE_LINK, GET_USER, UPDATE_LINK } from "@/app/Graphql/Queries";
 import { useSession } from "next-auth/react";
 import { CustomSession } from "@/types/types";
 import LinksSkeletons from "./Skeletons/LinksSkeletons";
@@ -24,6 +24,7 @@ const AllLinksComp = () => {
   const { data, loading, error } = useQuery(GET_USER, {
     variables: { userId: sessionData?.user?.id ? sessionData.user.id : "" },
   });
+
   const [DeleteLink] = useMutation(DELETE_LINK, {
     onError: (error) => {
       const errorMessage =
@@ -42,15 +43,39 @@ const AllLinksComp = () => {
     ],
   });
 
+  const [UpdateLink] = useMutation(UPDATE_LINK, {
+    onError: (error) => {
+      const errorMessage =
+        error.graphQLErrors?.[0]?.message ||
+        "An error occurred while updating link";
+      toast.error(errorMessage);
+    },
+    onCompleted: () => {
+      toast.success("Link updated successfully");
+    },
+    refetchQueries: [
+      {
+        query: GET_USER,
+        variables: { userId: sessionData?.user?.id ? sessionData.user.id : "" },
+      },
+    ],
+  });
+
   const [currentPage, setCurrentPage] = useState(1);
   const linksPerPage = 6;
 
-  const handleDelete = (id: { id: string }) => {
+  const handleDelete = (id: string) => {
     DeleteLink({ variables: { deleteLinkId: id } });
   };
 
-  const handleEdit = () => {
-    console.log("Edit clicked");
+  const handleEdit = (id: string, field: string, value: string) => {
+    console.log("Editing link:", { id, field, value });
+    UpdateLink({
+      variables: {
+        updateLinkId: id,
+        [field]: value,
+      },
+    });
   };
 
   if (loading) return <LinksSkeletons />;
@@ -66,7 +91,6 @@ const AllLinksComp = () => {
   const indexOfLastLink = currentPage * linksPerPage;
   const indexOfFirstLink = indexOfLastLink - linksPerPage;
   const currentLinks = links.slice(indexOfFirstLink, indexOfLastLink);
-
   return (
     <div className="flex w-full items-center justify-start flex-col gap-2 p-2">
       <div className="flex w-full items-center justify-between">
@@ -81,6 +105,7 @@ const AllLinksComp = () => {
         {currentLinks.map((link: any) => (
           <LinkCard
             key={link.id}
+            id={link.id}
             title={link.title}
             url={link.url}
             image={link.image}
