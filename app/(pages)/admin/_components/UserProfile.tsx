@@ -106,15 +106,20 @@ const UserProfile: React.FC<UserProfileProps> = ({
           )}
         </div>
 
-        {/* Username */}
-        <h2 className="text-2xl font-bold text-center mt-4 text-white capitalize">
-          {user.username}
-        </h2>
+        <div
+          className={`w-min mx-auto p-2 flex flex-col items-center justify-center mt-3 rounded-md ${theme.image &&
+            "bg-foreground/70"} `}
+        >
+          {/* Username */}
+          <h2 className="text-2xl font-bold text-center  text-white capitalize">
+            {user.username}
+          </h2>
 
-        {/* Description */}
-        <p className="text-center text-white mt-2 px-6 text-sm">
-          {user.desc || "No description provided."}
-        </p>
+          {/* Description */}
+          <p className="text-center text-white mt-2 px-6 text-sm text-nowrap">
+            {user.desc || "No description provided."}
+          </p>
+        </div>
       </div>
 
       {/* Link List */}
@@ -160,7 +165,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
       </div>
 
       {/* Logo */}
-      <div className="w-52 h-10 mx-auto absolute bottom-0 left-1/2 flex items-center justify-center mb-3 bg-black p-2 rounded-lg -translate-x-1/2">
+      <div className="w-52 h-10 mx-auto absolute bottom-0 left-1/2 flex items-center justify-center md:mb-3 bg-black p-2 rounded-lg -translate-x-1/2">
         <Logo />
       </div>
     </div>
